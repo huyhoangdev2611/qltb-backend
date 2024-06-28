@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class UpdateGiaoVienRequest {
-    private String maGV;
     private String tenGV;
     private String gioiTinh;
     private LocalDate ngaySinh;

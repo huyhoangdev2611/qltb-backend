@@ -14,6 +14,7 @@ public class DMThietBiResponse {
     private String tenTB;
     private String maDVT;
     private String maMonHoc;
+    private String tenMonHoc;
     private String maLoaiTB;
     private int slToiThieu;
     private boolean tbTuLam;
