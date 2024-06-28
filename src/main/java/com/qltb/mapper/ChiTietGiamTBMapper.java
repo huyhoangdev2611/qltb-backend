@@ -11,5 +11,5 @@ import org.mapstruct.MappingTarget;
 public interface ChiTietGiamTBMapper {
     ChiTietGiamTB toChiTietGiamTB(CreateChiTietGiamTBRequest request);
     void updateChiTietGiamTB(@MappingTarget ChiTietGiamTB chiTietGiamTB, UpdateChiTietGiamTBRequest request);
-    ChiTietGiamTBResponse toAnimeResponse(ChiTietGiamTB chiTietGiamTB);
+    ChiTietGiamTBResponse toChiTietGiamTBResponse(ChiTietGiamTB chiTietGiamTB);
 }

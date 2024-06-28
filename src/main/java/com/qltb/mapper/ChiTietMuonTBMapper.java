@@ -1,12 +1,8 @@
 package com.qltb.mapper;
 
-import com.qltb.entity.ChiTietKiemKe;
 import com.qltb.entity.ChiTietMuonTB;
-import com.qltb.model.request.create.CreateChiTietKiemKeRequest;
 import com.qltb.model.request.create.CreateChiTietMuonTBRequest;
-import com.qltb.model.request.update.UpdateChiTietKiemKeRequest;
 import com.qltb.model.request.update.UpdateChiTietMuonTBRequest;
-import com.qltb.model.response.ChiTietKiemKeResponse;
 import com.qltb.model.response.ChiTietMuonTBResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
