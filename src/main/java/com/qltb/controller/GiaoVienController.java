@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/giao-vien")
+@RequestMapping("/giao-vien")
 public class GiaoVienController {
     @Autowired
     private GiaoVienService giaoVienService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<GiaoVienResponse> createGiaoVien(@RequestBody CreateGiaoVienRequest request) {
         return ResponseEntity.ok(giaoVienService.create(request));
     }
