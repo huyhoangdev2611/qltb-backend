@@ -1,5 +1,6 @@
 package com.qltb.controller;
 
+import com.qltb.mapper.DMThietBiMapper;
 import com.qltb.model.request.create.CreateDMThietBiRequest;
 import com.qltb.model.request.update.UpdateDMThietBiRequest;
 import com.qltb.model.response.DMThietBiResponse;
@@ -11,12 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/dm-thiet-bi")
+@RequestMapping("/dm-thiet-bi")
 public class DMThietBiController {
+
     @Autowired
     private DMThietBiService dmThietBiService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<DMThietBiResponse> createDMThietBi(@RequestBody CreateDMThietBiRequest request) {
         return ResponseEntity.ok(dmThietBiService.create(request));
     }

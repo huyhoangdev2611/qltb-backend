@@ -6,6 +6,9 @@ import com.qltb.model.request.create.CreateDMThietBiRequest;
 import com.qltb.model.request.update.UpdateDMThietBiRequest;
 import com.qltb.model.response.DMThietBiResponse;
 import com.qltb.repository.DMThietBiRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +16,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class DMThietBiService {
-    @Autowired
-    private DMThietBiRepository dmThietBiRepository;
-
-    @Autowired
-    private DMThietBiMapper dmThietBiMapper;
+    DMThietBiRepository dmThietBiRepository;
+    DMThietBiMapper dmThietBiMapper;
 
     public DMThietBiResponse create(CreateDMThietBiRequest request) {
         DMThietBi dmThietBi = dmThietBiMapper.toDMThietBi(request);

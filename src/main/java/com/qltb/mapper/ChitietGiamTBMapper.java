@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
-public interface ChiTietGiamTBMapper {
+public interface ChitietGiamTBMapper {
     ChiTietGiamTB toChiTietGiamTB(CreateChiTietGiamTBRequest request);
     void updateChiTietGiamTB(@MappingTarget ChiTietGiamTB chiTietGiamTB, UpdateChiTietGiamTBRequest request);
     ChiTietGiamTBResponse toChiTietGiamTBResponse(ChiTietGiamTB chiTietGiamTB);
