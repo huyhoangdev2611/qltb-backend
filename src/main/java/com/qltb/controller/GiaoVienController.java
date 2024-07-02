@@ -5,6 +5,7 @@ import com.qltb.model.request.update.UpdateGiaoVienRequest;
 import com.qltb.model.response.GiaoVienResponse;
 import com.qltb.service.GiaoVienService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +41,10 @@ public class GiaoVienController {
     @GetMapping
     public ResponseEntity<List<GiaoVienResponse>> getAllGiaoVien() {
         return ResponseEntity.ok(giaoVienService.getAll());
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<GiaoVienResponse>> getAllGiaoVien(@RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(giaoVienService.getAll(page, size));
     }
 }

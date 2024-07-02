@@ -7,6 +7,9 @@ import com.qltb.model.request.update.UpdateGiaoVienRequest;
 import com.qltb.model.response.GiaoVienResponse;
 import com.qltb.repository.GiaoVienRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,6 +53,12 @@ public class GiaoVienService {
         return giaoVienRepository.findAll().stream()
                 .map(giaoVienMapper::toGiaoVienResponse)
                 .collect(Collectors.toList());
+    }
+
+    public Page<GiaoVienResponse> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return giaoVienRepository.findAll(pageable).map(giaoVienMapper::toGiaoVienResponse);
+
     }
 
     private String generateMaGV() {

@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class DonViTinhResponse {
-    private String maDVT;
     private String tenDVT;
 }
