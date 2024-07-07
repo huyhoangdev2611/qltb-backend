@@ -22,12 +22,12 @@ public class GiaoVienController {
         return ResponseEntity.ok(giaoVienService.create(request));
     }
 
-    @PutMapping("/{maGV}")
+    @PutMapping("/update/{maGV}")
     public ResponseEntity<GiaoVienResponse> updateGiaoVien(@PathVariable String maGV, @RequestBody UpdateGiaoVienRequest request) {
         return ResponseEntity.ok(giaoVienService.update(maGV, request));
     }
 
-    @DeleteMapping("/{maGV}")
+    @DeleteMapping("/delete/{maGV}")
     public ResponseEntity<Void> deleteGiaoVien(@PathVariable String maGV) {
         giaoVienService.delete(maGV);
         return ResponseEntity.noContent().build();
@@ -46,5 +46,11 @@ public class GiaoVienController {
     @GetMapping("/page")
     public ResponseEntity<Page<GiaoVienResponse>> getAllGiaoVien(@RequestParam int page, @RequestParam int size) {
         return ResponseEntity.ok(giaoVienService.getAll(page, size));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<GiaoVienResponse>> searchByName (
+            @RequestParam String name, @RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(giaoVienService.searchByName(name, page, size));
     }
 }

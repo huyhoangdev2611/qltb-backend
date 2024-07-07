@@ -1,15 +1,18 @@
 package com.qltb.service;
 
 import com.qltb.entity.GiaoVien;
+import com.qltb.entity.ToCM;
 import com.qltb.mapper.GiaoVienMapper;
 import com.qltb.model.request.create.CreateGiaoVienRequest;
 import com.qltb.model.request.update.UpdateGiaoVienRequest;
 import com.qltb.model.response.GiaoVienResponse;
 import com.qltb.repository.GiaoVienRepository;
+import com.qltb.repository.ToCMRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +23,8 @@ import java.util.stream.Collectors;
 public class GiaoVienService {
     @Autowired
     private GiaoVienRepository giaoVienRepository;
-
+    @Autowired
+    private ToCMRepository toCMRepository;
     @Autowired
     private GiaoVienMapper giaoVienMapper;
 
@@ -56,9 +60,19 @@ public class GiaoVienService {
     }
 
     public Page<GiaoVienResponse> getAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return giaoVienRepository.findAll(pageable).map(giaoVienMapper::toGiaoVienResponse);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "maGV"));
+        return giaoVienRepository.findAll(pageable).map(giaoVien -> {
+            GiaoVienResponse giaoVienResponse = giaoVienMapper.toGiaoVienResponse(giaoVien);
+            ToCM toCM = toCMRepository.findById(giaoVien.getMaToCM()).orElseThrow(() -> new RuntimeException("ToCM not found"));
+            giaoVienResponse.setToCM(toCM.getTenToCM());
+            return giaoVienResponse;
+        });
 
+    }
+
+    public Page<GiaoVienResponse> searchByName(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return giaoVienRepository.findByTenGVContainingIgnoreCaseOrderByMaGVAsc(pageable,name).map(giaoVienMapper::toGiaoVienResponse);
     }
 
     private String generateMaGV() {

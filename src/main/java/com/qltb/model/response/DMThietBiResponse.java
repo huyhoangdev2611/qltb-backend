@@ -12,10 +12,11 @@ import lombok.NoArgsConstructor;
 public class DMThietBiResponse {
     private String maTB;
     private String tenTB;
+    private String maLoaiTB;
     private String maDVT;
     private String maMonHoc;
     private String tenMonHoc;
-    private String maLoaiTB;
+    private String loaiTB;
     private int slToiThieu;
     private boolean tbTuLam;
     private boolean tbTieuHao;

@@ -1,15 +1,23 @@
 package com.qltb.service;
 
+import com.qltb.controller.DMThietBiController;
 import com.qltb.entity.DMThietBi;
 import com.qltb.mapper.DMThietBiMapper;
 import com.qltb.model.request.create.CreateDMThietBiRequest;
 import com.qltb.model.request.update.UpdateDMThietBiRequest;
 import com.qltb.model.response.DMThietBiResponse;
+import com.qltb.model.response.GiaoVienResponse;
 import com.qltb.repository.DMThietBiRepository;
+import com.qltb.repository.LoaiTBRepository;
+import com.qltb.repository.MonHocRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +28,14 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
 public class DMThietBiService {
+    @Autowired
     DMThietBiRepository dmThietBiRepository;
+    @Autowired
     DMThietBiMapper dmThietBiMapper;
+    @Autowired
+    LoaiTBRepository loaiTBRepository;
+    @Autowired
+    MonHocRepository monHocRepository;
 
     public DMThietBiResponse create(CreateDMThietBiRequest request) {
         DMThietBi dmThietBi = dmThietBiMapper.toDMThietBi(request);
@@ -54,6 +68,16 @@ public class DMThietBiService {
                 .collect(Collectors.toList());
     }
 
+    public Page<DMThietBiResponse> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "maTB"));
+        return dmThietBiRepository.findAll(pageable).map(this::apply);
+    }
+
+    public Page<DMThietBiResponse> searchByName(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return dmThietBiRepository.findByTenTBContainingIgnoreCaseOrderByMaTB(pageable, name).map(this::apply);
+    }
+
     private String generateMaTB() {
         Optional<DMThietBi> lastDMThietBi = dmThietBiRepository.findTopByOrderByMaTBDesc();
         if (lastDMThietBi.isPresent()) {
@@ -63,5 +87,12 @@ public class DMThietBiService {
         } else {
             return "TB00001";
         }
+    }
+
+    private DMThietBiResponse apply(DMThietBi dmThietBi) {
+        DMThietBiResponse dmThietBiResponse = dmThietBiMapper.toDMThietBiResponse(dmThietBi);
+        dmThietBiResponse.setLoaiTB(String.valueOf(loaiTBRepository.findById(dmThietBi.getMaLoaiTB()).get().getTenLoaiTB()));
+        dmThietBiResponse.setTenMonHoc(String.valueOf(monHocRepository.findById(dmThietBi.getMaMonHoc()).get().getTenMonHoc()));
+        return dmThietBiResponse;
     }
 }

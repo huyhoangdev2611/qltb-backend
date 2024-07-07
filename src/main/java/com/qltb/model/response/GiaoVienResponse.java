@@ -18,5 +18,6 @@ public class GiaoVienResponse {
     private LocalDate ngaySinh;
     private String soDienThoai;
     private String diaChi;
+    private String toCM;
     private String maToCM;
 }
