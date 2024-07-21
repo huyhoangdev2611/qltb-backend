@@ -13,7 +13,8 @@ public class CreateDSThietBiRequest {
     private String maTB;
     private String maKP;
     private int soLuong;
-    private int trongKho;
-    private int hong;
-    private int mat;
+    private String tenTB;
+//    private int trongKho;
+//    private int hong;
+//    private int mat;
 }

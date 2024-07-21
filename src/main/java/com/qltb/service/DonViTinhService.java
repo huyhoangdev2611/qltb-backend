@@ -1,5 +1,6 @@
 package com.qltb.service;
 
+import com.qltb.entity.DMThietBi;
 import com.qltb.entity.DonViTinh;
 import com.qltb.entity.GiaoVien;
 import com.qltb.mapper.DonViTinhMapper;
@@ -39,5 +40,13 @@ public class DonViTinhService {
         } else {
             return "DVT00001";
         }
+    }
+
+    public DonViTinhResponse getById(String maDVT) {
+        DonViTinh donViTinh = donViTinhRepository.findById(maDVT)
+                .orElseThrow(() -> new RuntimeException("Đơn vị tính không được tìm thấy"));
+        List<DMThietBi> list = donViTinh.getDmThietBis();
+        System.out.println(list);
+        return donViTinhMapper.toDonViTinhResponse(donViTinh);
     }
 }

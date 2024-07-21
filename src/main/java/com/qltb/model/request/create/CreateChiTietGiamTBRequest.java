@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CreateChiTietGiamTBRequest {
-    private String maPhieuGiam;
+//    private String maPhieuGiam;
     private String maTB;
     private String maKP;
-    private int slHong;
-    private int slMat;
-    private int slConDungDuoc;
+    private int hong;
+    private int conDungDuoc;
+    private String tenTB;
+    private int tongGiam;
 }

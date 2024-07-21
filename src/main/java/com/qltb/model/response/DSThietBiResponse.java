@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 public class DSThietBiResponse {
     private String maTB;
     private String maKP;
+    private String tenTB;
+    private String tenKP;
+    private int muon;
     private int soLuong;
     private int trongKho;
     private int hong;

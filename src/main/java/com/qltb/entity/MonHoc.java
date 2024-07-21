@@ -7,8 +7,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "mon_hoc")
-@Data
-@AllArgsConstructor
+@Getter
+@Setter@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class MonHoc {

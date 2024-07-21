@@ -19,6 +19,11 @@ public class DonViTinhController {
         return donViTinhService.getAll();
     }
 
+    @GetMapping("/{maDVT}")
+    public DonViTinhResponse getById(@PathVariable String maDVT) {
+        return donViTinhService.getById(maDVT);
+    }
+
     @PostMapping("/create")
     public DonViTinhResponse create(@RequestBody CreateDonViTinhRequest request) {
         return donViTinhService.create(request);

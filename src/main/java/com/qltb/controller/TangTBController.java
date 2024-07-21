@@ -26,7 +26,8 @@ public class TangTBController {
     }
 
     @PostMapping("/create")
-    public TangTBResponse createTangTB(CreateTangTBRequest request) {
+    public TangTBResponse createTangTB(@RequestBody CreateTangTBRequest request) {
+        System.out.println(request);
         return tangTBService.createTangTB(request);
     }
 

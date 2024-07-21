@@ -8,6 +8,7 @@ import com.qltb.model.request.update.UpdateDMThietBiRequest;
 import com.qltb.model.response.DMThietBiResponse;
 import com.qltb.model.response.GiaoVienResponse;
 import com.qltb.repository.DMThietBiRepository;
+import com.qltb.repository.DonViTinhRepository;
 import com.qltb.repository.LoaiTBRepository;
 import com.qltb.repository.MonHocRepository;
 import lombok.AccessLevel;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +38,8 @@ public class DMThietBiService {
     LoaiTBRepository loaiTBRepository;
     @Autowired
     MonHocRepository monHocRepository;
+    @Autowired
+    DonViTinhRepository donViTinhRepository;
 
     public DMThietBiResponse create(CreateDMThietBiRequest request) {
         DMThietBi dmThietBi = dmThietBiMapper.toDMThietBi(request);
@@ -64,7 +68,8 @@ public class DMThietBiService {
 
     public List<DMThietBiResponse> getAll() {
         return dmThietBiRepository.findAll().stream()
-                .map(dmThietBiMapper::toDMThietBiResponse)
+                .map(this::apply)
+                .sorted(Comparator.comparing(DMThietBiResponse::getMaTB))
                 .collect(Collectors.toList());
     }
 
@@ -76,6 +81,14 @@ public class DMThietBiService {
     public Page<DMThietBiResponse> searchByName(String name, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return dmThietBiRepository.findByTenTBContainingIgnoreCaseOrderByMaTB(pageable, name).map(this::apply);
+    }
+
+    public List<DMThietBiResponse> searchByName(String name) {
+        return dmThietBiRepository.findByTenTBContainingIgnoreCase(name).stream().map(this::apply).toList();
+    }
+
+    public List<DMThietBiResponse> getInDSThietbi() {
+        return dmThietBiRepository.getInDSThietBi().stream().map(this::apply).toList();
     }
 
     private String generateMaTB() {
@@ -93,6 +106,7 @@ public class DMThietBiService {
         DMThietBiResponse dmThietBiResponse = dmThietBiMapper.toDMThietBiResponse(dmThietBi);
         dmThietBiResponse.setLoaiTB(String.valueOf(loaiTBRepository.findById(dmThietBi.getMaLoaiTB()).get().getTenLoaiTB()));
         dmThietBiResponse.setTenMonHoc(String.valueOf(monHocRepository.findById(dmThietBi.getMaMonHoc()).get().getTenMonHoc()));
+        dmThietBiResponse.setDonViTinh(String.valueOf(donViTinhRepository.findById(dmThietBi.getMaDVT()).get().getTenDVT()));
         return dmThietBiResponse;
     }
 }

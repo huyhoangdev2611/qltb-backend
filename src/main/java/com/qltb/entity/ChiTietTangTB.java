@@ -10,11 +10,21 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class ChiTietTangTB {
-    @EmbeddedId
-    private ChiTietTangTBKey id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
+    @Column(name = "ma_phieu_tang")
+    private String maPhieuTang;
+
+    @Column(name = "ma_tb")
+    private String maTB;
+
+    @Column(name = "ma_kp")
+    private String maKP;
 
     @Column(name = "sl_luong")
-    private int slLuong;
+    private int soLuong;
 
     @Column(name = "don_gia")
     private int donGia;

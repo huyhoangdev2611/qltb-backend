@@ -26,7 +26,7 @@ public class GiamTBController {
     }
 
     @PostMapping("/create")
-    public GiamTBResponse createGiamTB(CreateGiamTBRequest request) {
+    public GiamTBResponse createGiamTB(@RequestBody CreateGiamTBRequest request) {
         return giamTBService.createGiamTB(request);
     }
 
