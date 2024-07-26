@@ -1,42 +1,27 @@
 package com.qltb.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "chi_tiet_tra_tb")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class ChiTietTraTB {
-    @EmbeddedId
-    private ChiTietTraTBKey id;
-
-    @Column(name = "sl_tra")
-    private int slTra;
-
-    @Column(name = "sl_hong")
-    private int slHong;
-
-    @Column(name = "sl_mat")
-    private int slMat;
-
-    @Column(name = "sl_tieu_hao")
-    private int slTieuHao;
+    @Id
+    @Column(name = "ma_phieu_tra", length = 10)
+    private String maPhieuTra;
 
     @ManyToOne
-    @MapsId("maPhieuTra")
-    @JoinColumn(name = "ma_phieu_tra")
+    @JoinColumn(name = "ma_ca_biet_tb")
+    private ThietBi thietBi;
+
+    @Column(name = "tinh_trang_tra")
+    private String tinhTrangTra;
+
+    @Column(name = "ghi_chu")
+    private String ghiChu;
+
+    @ManyToOne
+    @JoinColumn(name = "tra_tb_id") // Use the correct column name here
     private TraTB traTB;
-
-    @ManyToOne
-    @MapsId("maTB")
-    @JoinColumn(name = "ma_tb")
-    private DMThietBi dmThietBi;
-
-    @ManyToOne
-    @MapsId("maKP")
-    @JoinColumn(name = "ma_kp")
-    private KhoPhong khoPhong;
 }

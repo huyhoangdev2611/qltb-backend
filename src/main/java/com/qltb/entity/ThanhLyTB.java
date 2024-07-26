@@ -1,4 +1,4 @@
-package com.qltb_backend.entity;
+package com.qltb.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

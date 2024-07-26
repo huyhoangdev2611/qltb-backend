@@ -1,24 +1,21 @@
 package com.qltb.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "loai_tb")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class LoaiTB {
     @Id
-    @Column(name = "ma_loai_tb")
+    @Column(name = "ma_loai_tb", length = 10)
     private String maLoaiTB;
 
     @Column(name = "ten_loai_tb")
     private String tenLoaiTB;
 
     @OneToMany(mappedBy = "loaiTB")
-    private List<DMThietBi> dmThietBis;
+    private List<NhomThietBi> nhomThietBiList;
 }

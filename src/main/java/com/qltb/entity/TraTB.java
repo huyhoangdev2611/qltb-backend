@@ -1,32 +1,26 @@
 package com.qltb.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "tra_tb")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class TraTB {
     @Id
-    @Column(name = "ma_phieu_tra")
+    @Column(name = "ma_phieu_tra", length = 10)
     private String maPhieuTra;
 
     @Column(name = "ngay_tra")
-    private LocalDate ngayTra;
-
-    @Column(name = "ma_phieu_muon")
-    private String maPhieuMuon;
+    private Date ngayTra;
 
     @ManyToOne
-    @JoinColumn(name = "ma_phieu_muon", insertable = false, updatable = false)
+    @JoinColumn(name = "ma_phieu_muon")
     private MuonTB muonTB;
 
     @OneToMany(mappedBy = "traTB")
-    private List<ChiTietTraTB> chiTietTraTBs;
+    private List<ChiTietTraTB> chiTietTraTBList;
 }

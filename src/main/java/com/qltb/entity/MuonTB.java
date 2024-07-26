@@ -1,52 +1,32 @@
 package com.qltb.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "muon_tb")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class MuonTB {
     @Id
-    @Column(name = "ma_phieu_muon")
+    @Column(name = "ma_phieu_muon", length = 10)
     private String maPhieuMuon;
 
     @Column(name = "ngay_muon")
-    private LocalDate ngayMuon;
+    private Date ngayMuon;
 
     @Column(name = "ngay_hen_tra")
-    private LocalDate ngayHenTra;
+    private Date ngayHenTra;
 
-    @Column(name = "ma_gv")
-    private String maGV;
-
-    @Column(name = "ma_mon_hoc")
-    private String maMonHoc;
-
-    @Column(name = "ma_lop")
-    private String maLop;
+    @ManyToOne
+    @JoinColumn(name = "ma_gv")
+    private GiaoVien giaoVien;
 
     @Column(name = "muc_dich")
     private String mucDich;
 
-    @ManyToOne
-    @JoinColumn(name = "ma_gv", insertable = false, updatable = false)
-    private GiaoVien giaoVien;
-
-    @ManyToOne
-    @JoinColumn(name = "ma_mon_hoc", insertable = false, updatable = false)
-    private MonHoc monHoc;
-
-    @ManyToOne
-    @JoinColumn(name = "ma_lop", insertable = false, updatable = false)
-    private Lop lop;
-
     @OneToMany(mappedBy = "muonTB")
-    private List<ChiTietMuonTB> chiTietMuonTBs;
+    private List<ChiTietMuonTB> chiTietMuonTBList;
 }
