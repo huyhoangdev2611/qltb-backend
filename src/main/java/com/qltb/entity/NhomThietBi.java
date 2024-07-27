@@ -16,16 +16,25 @@ public class NhomThietBi {
     @Column(name = "ten_ntb")
     private String tenNTB;
 
+    @Column(name = "ma_loai_tb")
+    private String maLoaiTB;
+
+    @Column(name = "ma_dvt")
+    private String maDVT;
+
+    @Column(name = "ma_mon_hoc")
+    private String maMonHoc;
+
     @ManyToOne
-    @JoinColumn(name = "ma_dvt")
+    @JoinColumn(name = "ma_dvt", insertable = false, updatable = false)
     private DonViTinh donViTinh;
 
     @ManyToOne
-    @JoinColumn(name = "ma_mon_hoc")
+    @JoinColumn(name = "ma_mon_hoc", insertable = false, updatable = false)
     private MonHoc monHoc;
 
     @ManyToOne
-    @JoinColumn(name = "ma_loai_tb")
+    @JoinColumn(name = "ma_loai_tb", insertable = false, updatable = false)
     private LoaiTB loaiTB;
 
     @Column(name = "sl_toi_thieu")

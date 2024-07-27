@@ -1,17 +1,13 @@
 package com.qltb.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.qltb.entity.ThietBi;
+import com.qltb.entity.MuonTB;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class ChiTietMuonTBResponse {
     private String maPhieuMuon;
-    private String maTB;
-    private String maKP;
-    private int slMuon;
+    private ThietBi thietBi;
+    private String tinhTrangKhiMuon;
+    private MuonTB muonTB;
 }

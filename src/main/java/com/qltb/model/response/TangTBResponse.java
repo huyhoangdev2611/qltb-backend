@@ -1,19 +1,14 @@
 package com.qltb.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.qltb.entity.NguonCap;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class TangTBResponse {
     private String maPhieuTang;
-    private LocalDate ngayLap;
-    private String maNguonCap;
+    private Date ngayLap;
+    private NguonCap nguonCap;
     private String noiDung;
 }

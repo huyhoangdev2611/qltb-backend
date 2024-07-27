@@ -1,24 +1,18 @@
 package com.qltb.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.qltb.entity.GiaoVien;
+import com.qltb.entity.ThietBi;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class TheoDoiHongMatResponse {
     private String maPhieuBao;
-    private LocalDate ngayBao;
-    private String maNguoiBao;
-    private String maTB;
-    private String maKP;
-    private int slHong;
-    private int slMat;
-    private int slDaSua;
-    private String ghiChu;
+    private Date ngayBao;
+    private GiaoVien giaoVien;
+    private ThietBi thietBi;
+    private boolean isHong;
+    private boolean isMat;
+    private String lyDoHongMat;
 }

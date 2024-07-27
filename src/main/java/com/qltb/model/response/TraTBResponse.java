@@ -1,18 +1,13 @@
 package com.qltb.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.qltb.entity.MuonTB;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class TraTBResponse {
     private String maPhieuTra;
-    private LocalDate ngayTra;
-    private String maPhieuMuon;
+    private Date ngayTra;
+    private MuonTB muonTB;
 }

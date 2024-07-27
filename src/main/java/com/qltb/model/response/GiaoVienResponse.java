@@ -1,16 +1,12 @@
 package com.qltb.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.qltb.entity.ToCM;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class GiaoVienResponse {
     private String maGV;
     private String tenGV;
@@ -18,5 +14,6 @@ public class GiaoVienResponse {
     private LocalDate ngaySinh;
     private String soDienThoai;
     private String diaChi;
+    private String toCM;
     private String maToCM;
 }
