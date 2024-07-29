@@ -1,16 +1,18 @@
 package com.qltb.model.request.create;
 
+import lombok.Builder;
 import lombok.Data;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 @Data
+@Builder
 public class ThietBiCreateRequest {
-    private String maCaBietTB;
     private String maNTB;
     private String maKP;
-    private Date ngayNhap;
-    private Date hanSuDung;
-    private String trangThai;
-    private String tinhTrang;
-    private boolean dangHoatDong;
+    private LocalDate ngayNhap;
+    private LocalDate hanSuDung;
+//    private String trangThai;
+//    private String tinhTrang;
+    private int soLuong;
 }

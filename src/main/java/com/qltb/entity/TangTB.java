@@ -17,14 +17,17 @@ public class TangTB {
     @Column(name = "ngay_lap")
     private Date ngayLap;
 
+    @Column(name = "ma_nguon_cap")
+    private String maNguonCap;
+
     @ManyToOne
-    @JoinColumn(name = "ma_nguon_cap")
+    @JoinColumn(name = "ma_nguon_cap", insertable = false, updatable = false)
     private NguonCap nguonCap;
 
     @Column(name = "noi_dung")
     private String noiDung;
 
-    @OneToMany(mappedBy = "tangTB")
+    @OneToMany(mappedBy = "tangTB", cascade = CascadeType.ALL)
     private List<ChiTietTangTB> chiTietTangTBList;
 
 

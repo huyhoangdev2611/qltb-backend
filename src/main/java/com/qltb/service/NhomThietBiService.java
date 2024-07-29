@@ -94,9 +94,9 @@ public class NhomThietBiService {
         if (lastDMThietBi.isPresent()) {
             String lastMaTB = lastDMThietBi.get().getMaNTB();
             int nextId = Integer.parseInt(lastMaTB.substring(2)) + 1;
-            return String.format("TB%05d", nextId);
+            return String.format("TB%03d", nextId);
         } else {
-            return "TB00001";
+            return "TB001";
         }
     }
 

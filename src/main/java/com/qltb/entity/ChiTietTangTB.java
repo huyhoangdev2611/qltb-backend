@@ -10,15 +10,22 @@ import java.util.Date;
 @Table(name = "chi_tiet_tang_tb")
 public class ChiTietTangTB {
     @Id
-    @Column(name = "ma_phieu_tang", length = 10)
-    private String maPhieuTang;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    private String id;
+
+    @Column(name = "ma_kp")
+    private String maKP;
+
+    @Column(name = "ma_ntb")
+    private String maNTB;
 
     @ManyToOne
-    @JoinColumn(name = "ma_tb")
-    private ThietBi thietBi;
+    @JoinColumn(name = "ma_ntb", insertable = false, updatable = false)
+    private NhomThietBi nhomThietBi;
 
     @ManyToOne
-    @JoinColumn(name = "ma_kp")
+    @JoinColumn(name = "ma_kp", insertable = false, updatable = false)
     private KhoPhong khoPhong;
 
     @Column(name = "han_su_dung")
@@ -30,7 +37,10 @@ public class ChiTietTangTB {
     @Column(name = "don_gia")
     private int donGia;
 
+    @Column(name = "ma_phieu_tang")
+    private String maPhieuTang;
+
     @ManyToOne
-    @JoinColumn(name = "tang_tb_id") // Use the correct column name here
+    @JoinColumn(name = "ma_phieu_tang", insertable = false, updatable = false)
     private TangTB tangTB;
 }

@@ -7,5 +7,4 @@ public class ChiTietThanhLyTBCreateRequest {
     private String maPhieuThanhLy;
     private String maCaBietTB;
     private String lyDoTL;
-    private String thanhLyTBId;
 }

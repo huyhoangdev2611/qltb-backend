@@ -3,6 +3,7 @@ package com.qltb.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,11 +16,11 @@ public class ThanhLyTB {
     private String maPhieuThanhLy;
 
     @Column(name = "ngay_lap")
-    private Date ngayLap;
+    private LocalDate ngayLap;
 
     @Column(name = "noi_dung")
     private String noiDung;
 
-    @OneToMany(mappedBy = "thanhLyTB")
+    @OneToMany(mappedBy = "thanhLyTB", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ChiTietThanhLyTB> chiTietThanhLyTBList;
 }
