@@ -3,6 +3,7 @@ package com.qltb.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -14,14 +15,20 @@ public class TheoDoiHongMat {
     private String maPhieuBao;
 
     @Column(name = "ngay_bao")
-    private Date ngayBao;
+    private LocalDate ngayBao;
+
+    @Column(name = "ma_nguoi_bao")
+    private String maGiaoVien;
 
     @ManyToOne
-    @JoinColumn(name = "ma_nguoi_bao")
+    @JoinColumn(name = "ma_nguoi_bao", insertable = false, updatable = false)
     private GiaoVien giaoVien;
 
+    @Column(name = "ma_ca_biet_tb")
+    private String maCaBietTB;
+
     @ManyToOne
-    @JoinColumn(name = "ma_ca_biet_tb")
+    @JoinColumn(name = "ma_ca_biet_tb", insertable = false, updatable = false)
     private ThietBi thietBi;
 
     @Column(name = "is_hong")

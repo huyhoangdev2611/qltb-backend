@@ -9,9 +9,10 @@ import java.util.Date;
 @Data
 public class TheoDoiHongMatResponse {
     private String maPhieuBao;
-    private Date ngayBao;
-    private GiaoVien giaoVien;
-    private ThietBi thietBi;
+    private String maGiaoVien;
+    private String maCaBietTB;
+    private String khoPhong;
+    private String tenTB;
     private boolean isHong;
     private boolean isMat;
     private String lyDoHongMat;

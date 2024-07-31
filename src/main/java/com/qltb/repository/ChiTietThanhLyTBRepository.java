@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChiTietThanhLyTBRepository extends JpaRepository<ChiTietThanhLyTB, String> {
+    void deleteByMaCaBietTB(String maCaBietTB);
 }

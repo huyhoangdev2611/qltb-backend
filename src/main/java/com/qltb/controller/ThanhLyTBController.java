@@ -6,10 +6,9 @@ import com.qltb.service.ThanhLyTBService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +20,21 @@ public class ThanhLyTBController {
     @PostMapping("/create")
     public ThanhLyTBResponse create(@RequestBody ThanhLyTBCreateRequest request) {
         return thanhLyTBService.create(request);
+    }
+
+    @GetMapping("/page")
+    public Page<ThanhLyTBResponse> getAll(@RequestParam int page, @RequestParam int size) {
+        return thanhLyTBService.getAll(page, size);
+    }
+
+    @GetMapping("/search")
+    public Page<ThanhLyTBResponse> search(@RequestParam(name = "name") String maPhieuThanhLy, @RequestParam int page, @RequestParam int size) {
+        return thanhLyTBService.search(maPhieuThanhLy, page, size);
+    }
+
+    @PatchMapping("/huy-thanh-ly-tb/{maCaBietTB}")
+    public ResponseEntity huyThanhLyTB(@PathVariable String maCaBietTB) {
+        thanhLyTBService.huyThanhLyTB(maCaBietTB);
+        return ResponseEntity.ok().build();
     }
 }

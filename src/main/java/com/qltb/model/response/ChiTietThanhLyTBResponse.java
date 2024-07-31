@@ -6,8 +6,11 @@ import com.qltb.entity.ThanhLyTB;
 
 @Data
 public class ChiTietThanhLyTBResponse {
-    private String maPhieuThanhLy;
-    private ThietBi thietBi;
-    private String lyDoTL;
-    private ThanhLyTB thanhLyTB;
+    private String maCaBietTB;
+    private String tenNTB;
+    private String khoPhong;
+    private String trangThai;
+    private String tinhTrang;
+    private String lyDoThanhLy;
+
 }

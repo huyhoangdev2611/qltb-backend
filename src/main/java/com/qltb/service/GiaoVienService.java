@@ -55,8 +55,7 @@ public class GiaoVienService {
 
     public List<GiaoVienResponse> getAll() {
         return giaoVienRepository.findAll().stream()
-                .map(giaoVienMapper::toGiaoVienResponse)
-                .collect(Collectors.toList());
+                .map(giaoVienMapper::toGiaoVienResponse).toList();
     }
 
     public Page<GiaoVienResponse> getAll(int page, int size) {

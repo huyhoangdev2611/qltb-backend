@@ -9,5 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ThanhLyTBMapper {
     ThanhLyTB toThanhLyTB(ThanhLyTBCreateRequest request);
+
+    @Mapping(target = "chiTietThanhLyTBList", ignore = true)
     ThanhLyTBResponse toThanhLyTBResponse(ThanhLyTB thanhLyTB);
 }

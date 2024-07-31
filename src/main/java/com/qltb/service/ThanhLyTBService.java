@@ -8,8 +8,10 @@ import com.qltb.mapper.ThanhLyTBMapper;
 import com.qltb.model.request.create.ThanhLyTBCreateRequest;
 import com.qltb.model.response.TangTBResponse;
 import com.qltb.model.response.ThanhLyTBResponse;
+import com.qltb.repository.ChiTietThanhLyTBRepository;
 import com.qltb.repository.ThanhLyTBRepository;
 import com.qltb.repository.ThietBiRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,6 +32,7 @@ public class ThanhLyTBService {
     ThanhLyTBMapper thanhLyTBMapper;
     ChiTietThanhLyTBMapper chiTietThanhLyTBMapper;
     ThietBiRepository thietBiRepository;
+    ChiTietThanhLyTBRepository chiTietThanhLyTBRepository;
 
     public ThanhLyTBResponse create(ThanhLyTBCreateRequest request) {
         ThanhLyTB thanhLyTB = thanhLyTBMapper.toThanhLyTB(request);
@@ -38,16 +41,21 @@ public class ThanhLyTBService {
             ChiTietThanhLyTB chiTietThanhLyTB = chiTietThanhLyTBMapper.toChiTietThanhLyTB(chiTietThanhLyTBCreateRequest, thanhLyTB.getMaPhieuThanhLy());
             ThietBi thietBi = thietBiRepository.findById(chiTietThanhLyTB.getMaCaBietTB()).get();
             thietBi.setTrangThai("Đã thanh lý");
+            thietBi.setDangHoatDong(false);
             thietBiRepository.save(thietBi);
             return chiTietThanhLyTB;
         }).toList());
         return thanhLyTBMapper.toThanhLyTBResponse(thanhLyTBRepository.save(thanhLyTB));
     }
 
-//    public Page<TangTBResponse> getAll(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "maPhieuTang"));
-//        return tangTBRepository.getAll(pageable).map(tangTBMapper::toTangTBResponse);
-//    }
+    public Page<ThanhLyTBResponse> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "maPhieuThanhLy"));
+        return thanhLyTBRepository.findAll(pageable).map(thanhLyTB -> {
+            ThanhLyTBResponse thanhLyTBResponse = thanhLyTBMapper.toThanhLyTBResponse(thanhLyTB);
+            thanhLyTBResponse.setChiTietThanhLyTBList(thanhLyTB.getChiTietThanhLyTBList().stream().map(chiTietThanhLyTBMapper::toChiTietThanhLyTBResponse).toList());
+            return thanhLyTBResponse;
+        });
+    }
 
     private String generateMaPhieuThanhLy() {
         Optional<ThanhLyTB> lastTangTB = thanhLyTBRepository.findTopByOrderByMaPhieuThanhLyDesc();
@@ -58,5 +66,17 @@ public class ThanhLyTBService {
         } else {
             return "PG00001";
         }
+    }
+
+    public Page<ThanhLyTBResponse> search(String maPhieuThanhLy, int page, int size) {
+        return thanhLyTBRepository.findByMaPhieuThanhLyContainingIgnoreCaseOrderByMaPhieuThanhLyAsc(maPhieuThanhLy, PageRequest.of(page, size)).map(thanhLyTBMapper::toThanhLyTBResponse);
+    }
+
+    @Transactional
+    public void huyThanhLyTB(String maCaBietTB) {
+        ThietBi thietBi = thietBiRepository.findById(maCaBietTB).get();
+        thietBi.setTrangThai("Trong kho");
+        chiTietThanhLyTBRepository.deleteByMaCaBietTB(maCaBietTB);
+        thietBiRepository.save(thietBi);
     }
 }

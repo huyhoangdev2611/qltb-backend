@@ -65,13 +65,30 @@ public class ThietBiService {
         }
     }
 
-    public List<ThietBiResponse> getAll() {
-        return thietBiRepository.findAll(Sort.by(Sort.Direction.ASC, "maCaBietTB")).stream().map(thietBiMapper::toThietBiResponse).toList();
+    public List<ThietBiResponse> getAllChuaThanhLy() {
+        return thietBiRepository.findAllChuaThanhLy(Sort.by(Sort.Direction.ASC, "maCaBietTB")).stream().map(thietBiMapper::toThietBiResponse).toList();
+    }
+
+    public Page<ThietBiResponse> search(String maCaBietThietBi, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return thietBiRepository.findByMaCaBietTBContainingIgnoreCaseOrderByMaCaBietTB(maCaBietThietBi, pageable).map(thietBiMapper::toThietBiResponse);
+    }
+
+    public List<ThietBiResponse> search(String maCaBietThietBi) {
+        return thietBiRepository.findByMaCaBietTBContainingIgnoreCaseOrderByMaCaBietTB(maCaBietThietBi).stream().map(thietBiMapper::toThietBiResponse).toList();
     }
 
     private String generateMaCB(String maNTB) {
         int amount = thietBiRepository.countTB(maNTB);
         return maNTB + "-" + (amount + 1);
+    }
+
+    public List<ThietBiResponse> getAllCoTheGhiGiam() {
+        return thietBiRepository.getAllCoTheGhiGiam().stream().map(thietBiMapper::toThietBiResponse).toList();
+    }
+
+    public List<ThietBiResponse> getAllCoTheGhiGiam(String maCaBietTB) {
+        return thietBiRepository.getAllCoTheGhiGiam(maCaBietTB).stream().map(thietBiMapper::toThietBiResponse).toList();
     }
 
 

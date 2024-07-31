@@ -37,7 +37,27 @@ public class ThietBiController {
     }
 
     @GetMapping("")
-    public List<ThietBiResponse> getAll() {
-        return thietBiService.getAll();
+    public List<ThietBiResponse> getAllChuaThanhLy() {
+        return thietBiService.getAllChuaThanhLy();
+    }
+
+    @GetMapping("/search")
+    public Page<ThietBiResponse> search(@RequestParam(name = "name") String maCaBietTB, @RequestParam int page, @RequestParam int size) {
+        return thietBiService.search(maCaBietTB, page, size);
+    }
+
+    @GetMapping("/search-all")
+    public List<ThietBiResponse> searchAll(@RequestParam(name = "name") String maCaBietTB) {
+        return thietBiService.search(maCaBietTB);
+    }
+
+    @GetMapping("/get-all-co-the-ghi-giam")
+    public List<ThietBiResponse> getAllCoTheGhiGiam() {
+        return thietBiService.getAllCoTheGhiGiam();
+    }
+
+    @GetMapping("/get-all-co-the-ghi-giam/search")
+    public List<ThietBiResponse> getAllCoTheGhiGiam(@RequestParam(name = "name") String maCaBietTB) {
+        return thietBiService.getAllCoTheGhiGiam(maCaBietTB);
     }
 }
