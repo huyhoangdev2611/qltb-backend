@@ -3,6 +3,7 @@ package com.qltb.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,17 +16,23 @@ public class MuonTB {
     private String maPhieuMuon;
 
     @Column(name = "ngay_muon")
-    private Date ngayMuon;
+    private LocalDate ngayMuon;
 
     @Column(name = "ngay_hen_tra")
-    private Date ngayHenTra;
+    private LocalDate ngayHenTra;
+
+    @Column(name = "ma_gv")
+    private String maGV;
 
     @ManyToOne
-    @JoinColumn(name = "ma_gv")
+    @JoinColumn(name = "ma_gv", insertable = false, updatable = false)
     private GiaoVien giaoVien;
 
     @Column(name = "muc_dich")
     private String mucDich;
+
+    @Column(name = "trang_thai")
+    private String trangThai;
 
     @OneToMany(mappedBy = "muonTB")
     private List<ChiTietMuonTB> chiTietMuonTBList;

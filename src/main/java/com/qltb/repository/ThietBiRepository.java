@@ -35,4 +35,7 @@ public interface ThietBiRepository extends JpaRepository<ThietBi, String> {
 
     @Query("select tb from ThietBi tb where tb.trangThai = 'Trong kho' and LOWER(tb.maCaBietTB) like LOWER(CONCAT('%', :maCaBietTB, '%')) order by tb.maCaBietTB")
     List<ThietBi> getAllCoTheGhiGiam(String maCaBietTB);
+
+    @Query("select tb from ThietBi tb where tb.trangThai = 'Trong kho' and tb.tinhTrang = 'Dùng được' and tb.dangHoatDong = true")
+    List<ThietBi> getAllCoTheMuon();
 }

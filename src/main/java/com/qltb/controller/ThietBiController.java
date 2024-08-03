@@ -60,4 +60,10 @@ public class ThietBiController {
     public List<ThietBiResponse> getAllCoTheGhiGiam(@RequestParam(name = "name") String maCaBietTB) {
         return thietBiService.getAllCoTheGhiGiam(maCaBietTB);
     }
+
+    @GetMapping("/tinh-trang-hien-hoat-dong")
+    public ResponseEntity<List<ThietBiResponse>> getHienTrangHoatDongTot() {
+        List<ThietBiResponse> thietBiResponses = thietBiService.getHienTrangHoatDongTot();
+        return ResponseEntity.ok(thietBiResponses);
+    }
 }

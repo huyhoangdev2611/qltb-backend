@@ -1,14 +1,11 @@
 package com.qltb.model.response;
 
-import lombok.Data;
 import com.qltb.entity.ThietBi;
-import com.qltb.entity.TraTB;
+import lombok.Data;
 
 @Data
 public class ChiTietTraTBResponse {
-    private String maPhieuTra;
-    private ThietBi thietBi;
+    private String maCaBietTB;
     private String tinhTrangTra;
     private String ghiChu;
-    private TraTB traTB;
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ChiTietTraTBUpdateRequest {
+    private String maCaBietTB;
     private String tinhTrangTra;
     private String ghiChu;
-    private String traTBId;
 }

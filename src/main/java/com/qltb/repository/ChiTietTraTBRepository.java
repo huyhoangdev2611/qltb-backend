@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ChiTietTraTBRepository extends JpaRepository<ChiTietTraTB, String> {
+public interface ChiTietTraTBRepository extends JpaRepository<ChiTietTraTB, Long> {
 }

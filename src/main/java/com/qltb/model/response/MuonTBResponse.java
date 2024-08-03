@@ -1,15 +1,18 @@
 package com.qltb.model.response;
 
 import lombok.Data;
-import com.qltb.entity.GiaoVien;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class MuonTBResponse {
     private String maPhieuMuon;
-    private Date ngayMuon;
-    private Date ngayHenTra;
-    private GiaoVien giaoVien;
+    private LocalDate ngayMuon;
+    private LocalDate ngayHenTra;
+    private String giaoVien;
     private String mucDich;
+    private String trangThai;
+    private List<ChiTietMuonTBResponse> chiTietMuonTBList;
 }

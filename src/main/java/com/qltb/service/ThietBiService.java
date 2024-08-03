@@ -12,6 +12,7 @@ import com.qltb.repository.ThietBiRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,13 +22,17 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ThietBiService {
+    @Autowired
     ThietBiRepository thietBiRepository;
+    @Autowired
     ThietBiMapper thietBiMapper;
+    @Autowired
     NhomThietBiRepository nhomThietBiRepository;
 
     public Page<ThietBiResponse> getTBs(int page, int size) {
@@ -89,6 +94,11 @@ public class ThietBiService {
 
     public List<ThietBiResponse> getAllCoTheGhiGiam(String maCaBietTB) {
         return thietBiRepository.getAllCoTheGhiGiam(maCaBietTB).stream().map(thietBiMapper::toThietBiResponse).toList();
+    }
+
+    public List<ThietBiResponse> getHienTrangHoatDongTot() {
+        List<ThietBi> thietBiList = thietBiRepository.getAllCoTheMuon();
+        return thietBiList.stream().map(thietBiMapper::toThietBiResponse).collect(Collectors.toList());
     }
 
 

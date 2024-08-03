@@ -1,11 +1,13 @@
 package com.qltb.model.request.create;
 
 import lombok.Data;
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class TraTBCreateRequest {
-    private String maPhieuTra;
-    private Date ngayTra;
+    private LocalDate ngayTra;
     private String maPhieuMuon;
+    private List<ChiTietTraTBCreateRequest> chiTietTraTBList;
 }
