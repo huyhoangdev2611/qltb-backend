@@ -1,16 +1,15 @@
 package com.qltb.service;
 
-import com.qltb.entity.GiaoVien;
-import com.qltb.entity.MuonTB;
 import com.qltb.entity.ChiTietMuonTB;
+import com.qltb.entity.MuonTB;
 import com.qltb.entity.ThietBi;
 import com.qltb.mapper.ChiTietMuonTBMapper;
 import com.qltb.mapper.MuonTBMapper;
 import com.qltb.model.request.create.MuonTBCreateRequest;
 import com.qltb.model.request.update.MuonTBUpdateRequest;
+import com.qltb.model.response.MonthlyBorrowedDevicesResponse;
 import com.qltb.model.response.MuonTBResponse;
 import com.qltb.repository.MuonTBRepository;
-import com.qltb.repository.GiaoVienRepository;
 import com.qltb.repository.ChiTietMuonTBRepository;
 import com.qltb.repository.ThietBiRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MuonTBService {
     private final MuonTBRepository muonTBRepository;
-    private final GiaoVienRepository giaoVienRepository;
     private final ChiTietMuonTBRepository chiTietMuonTBRepository;
     private final ThietBiRepository thietBiRepository;
     private final MuonTBMapper muonTBMapper;
@@ -147,7 +145,11 @@ public class MuonTBService {
     private void updateStatusIfOverdue(MuonTB muonTB) {
         LocalDate ngayHenTra = muonTB.getNgayHenTra();
         if (ngayHenTra != null && ngayHenTra.isBefore(LocalDate.now())) {
-            muonTB.setTrangThai("quá hạn");
+            muonTB.setTrangThai("Quá hạn");
         }
+    }
+
+    public List<MonthlyBorrowedDevicesResponse> getMonthlyBorrowedDevices() {
+        return muonTBRepository.countMonthlyBorrowedDevices();
     }
 }

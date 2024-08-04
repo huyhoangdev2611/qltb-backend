@@ -1,6 +1,7 @@
 package com.qltb.controller;
 
 import com.qltb.model.request.create.ThietBiCreateRequest;
+import com.qltb.model.response.DashboardDataResponse;
 import com.qltb.model.response.ThietBiResponse;
 import com.qltb.service.ThietBiService;
 import lombok.AccessLevel;
@@ -65,5 +66,16 @@ public class ThietBiController {
     public ResponseEntity<List<ThietBiResponse>> getHienTrangHoatDongTot() {
         List<ThietBiResponse> thietBiResponses = thietBiService.getHienTrangHoatDongTot();
         return ResponseEntity.ok(thietBiResponses);
+    }
+
+    @GetMapping("/dashboard-data")
+    public ResponseEntity<DashboardDataResponse> getDashboardData() {
+        long totalDevices = thietBiService.getTotalDevices();
+        long devicesInStorage = thietBiService.getDevicesInStorage();
+        long brokenDevices = thietBiService.getBrokenDevices();
+        long lostDevices = thietBiService.getLostDevices();
+
+        DashboardDataResponse response = new DashboardDataResponse(totalDevices, devicesInStorage, brokenDevices, lostDevices);
+        return ResponseEntity.ok(response);
     }
 }

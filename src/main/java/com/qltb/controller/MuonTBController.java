@@ -2,6 +2,7 @@ package com.qltb.controller;
 
 import com.qltb.model.request.create.MuonTBCreateRequest;
 import com.qltb.model.request.update.MuonTBUpdateRequest;
+import com.qltb.model.response.MonthlyBorrowedDevicesResponse;
 import com.qltb.model.response.MuonTBResponse;
 import com.qltb.service.MuonTBService;
 import lombok.AccessLevel;
@@ -10,6 +11,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -38,7 +41,9 @@ public class MuonTBController {
 
     @GetMapping("/{id}")
     public MuonTBResponse findById(@PathVariable String id) {
-        return muonTBService.findById(id).orElse(null);
+        return muonTBService.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan not found")
+        );
     }
 
     @DeleteMapping("/{id}")
@@ -54,7 +59,15 @@ public class MuonTBController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<MuonTBResponse>> searchByGiaoVien(
-            @RequestParam String tenGiaoVien, @RequestParam int page, @RequestParam int size) {
+            @RequestParam(required = false, defaultValue = "") String tenGiaoVien,
+            @RequestParam int page,
+            @RequestParam int size) {
         return ResponseEntity.ok(muonTBService.searchByGiaoVien(tenGiaoVien, page, size));
+    }
+
+    @GetMapping("/monthly-borrowed")
+    public ResponseEntity<List<MonthlyBorrowedDevicesResponse>> getMonthlyBorrowedDevices() {
+        List<MonthlyBorrowedDevicesResponse> data = muonTBService.getMonthlyBorrowedDevices();
+        return ResponseEntity.ok(data);
     }
 }

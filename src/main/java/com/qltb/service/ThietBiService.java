@@ -121,4 +121,20 @@ public class ThietBiService {
 //        }
 //    }
 
+    public long getTotalDevices() {
+        return thietBiRepository.count();
+    }
+
+    public long getDevicesInStorage() {
+        return thietBiRepository.countByTrangThaiTrongKho();
+    }
+
+    public long getBrokenDevices() {
+        return thietBiRepository.countByTinhTrangHong();
+    }
+
+    public long getLostDevices() {
+        return thietBiRepository.countByTrangThaiDaMat();
+    }
+
 }
