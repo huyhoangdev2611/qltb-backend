@@ -4,6 +4,7 @@ import lombok.Data;
 import com.qltb.entity.GiaoVien;
 import com.qltb.entity.ThietBi;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -16,4 +17,5 @@ public class TheoDoiHongMatResponse {
     private boolean isHong;
     private boolean isMat;
     private String lyDoHongMat;
+    private LocalDate ngayBao;
 }

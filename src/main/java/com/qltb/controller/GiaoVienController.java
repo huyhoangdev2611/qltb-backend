@@ -29,9 +29,8 @@ public class GiaoVienController {
     }
 
     @DeleteMapping("/delete/{maGV}")
-    public ResponseEntity<Void> deleteGiaoVien(@PathVariable String maGV) {
+    public void deleteGiaoVien(@PathVariable String maGV) {
         giaoVienService.delete(maGV);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{maGV}")

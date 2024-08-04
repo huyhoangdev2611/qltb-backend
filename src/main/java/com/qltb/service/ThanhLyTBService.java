@@ -1,11 +1,14 @@
 package com.qltb.service;
 
 import com.qltb.entity.ChiTietThanhLyTB;
+import com.qltb.entity.TangTB;
 import com.qltb.entity.ThanhLyTB;
 import com.qltb.entity.ThietBi;
 import com.qltb.mapper.ChiTietThanhLyTBMapper;
 import com.qltb.mapper.ThanhLyTBMapper;
 import com.qltb.model.request.create.ThanhLyTBCreateRequest;
+import com.qltb.model.request.update.TangTBUpdateRequest;
+import com.qltb.model.request.update.ThanhLyTBUpdateRequest;
 import com.qltb.model.response.TangTBResponse;
 import com.qltb.model.response.ThanhLyTBResponse;
 import com.qltb.repository.ChiTietThanhLyTBRepository;
@@ -20,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
@@ -33,6 +37,7 @@ public class ThanhLyTBService {
     ChiTietThanhLyTBMapper chiTietThanhLyTBMapper;
     ThietBiRepository thietBiRepository;
     ChiTietThanhLyTBRepository chiTietThanhLyTBRepository;
+    private final TangTBService tangTBService;
 
     public ThanhLyTBResponse create(ThanhLyTBCreateRequest request) {
         ThanhLyTB thanhLyTB = thanhLyTBMapper.toThanhLyTB(request);
@@ -41,7 +46,7 @@ public class ThanhLyTBService {
             ChiTietThanhLyTB chiTietThanhLyTB = chiTietThanhLyTBMapper.toChiTietThanhLyTB(chiTietThanhLyTBCreateRequest, thanhLyTB.getMaPhieuThanhLy());
             ThietBi thietBi = thietBiRepository.findById(chiTietThanhLyTB.getMaCaBietTB()).get();
             thietBi.setTrangThai("Đã thanh lý");
-            thietBi.setDangHoatDong(false);
+//            thietBi.setDangHoatDong(false);
             thietBiRepository.save(thietBi);
             return chiTietThanhLyTB;
         }).toList());
@@ -78,5 +83,15 @@ public class ThanhLyTBService {
         thietBi.setTrangThai("Trong kho");
         chiTietThanhLyTBRepository.deleteByMaCaBietTB(maCaBietTB);
         thietBiRepository.save(thietBi);
+    }
+
+    public ThanhLyTBResponse update(String maPhieuThanhLy, ThanhLyTBUpdateRequest request) {
+        ThanhLyTB thanhLyTB = thanhLyTBRepository.findById(maPhieuThanhLy).get();
+        thanhLyTBMapper.updateThanhLyTB(thanhLyTB, request);
+        return thanhLyTBMapper.toThanhLyTBResponse(thanhLyTBRepository.save(thanhLyTB));
+    }
+
+    public void delete(String maPhieuThanhLy) {
+        thanhLyTBRepository.deleteById(maPhieuThanhLy);
     }
 }

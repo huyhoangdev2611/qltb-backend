@@ -1,6 +1,7 @@
 package com.qltb.controller;
 
 import com.qltb.model.request.create.ThanhLyTBCreateRequest;
+import com.qltb.model.request.update.ThanhLyTBUpdateRequest;
 import com.qltb.model.response.ThanhLyTBResponse;
 import com.qltb.service.ThanhLyTBService;
 import lombok.AccessLevel;
@@ -36,5 +37,15 @@ public class ThanhLyTBController {
     public ResponseEntity huyThanhLyTB(@PathVariable String maCaBietTB) {
         thanhLyTBService.huyThanhLyTB(maCaBietTB);
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{maPhieuThanhLy}")
+    public ThanhLyTBResponse update(@PathVariable String maPhieuThanhLy, @RequestBody ThanhLyTBUpdateRequest request) {
+        return thanhLyTBService.update(maPhieuThanhLy, request);
+    }
+
+    @DeleteMapping("/{maPhieuThanhLy}")
+    public void delete(@PathVariable String maPhieuThanhLy) {
+        thanhLyTBService.delete(maPhieuThanhLy);
     }
 }

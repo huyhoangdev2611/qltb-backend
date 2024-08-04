@@ -30,9 +30,8 @@ public class NhomThietBiController {
     }
 
     @DeleteMapping("/delete/{maTB}")
-    public ResponseEntity<Void> deleteDMThietBi(@PathVariable String maTB) {
+    public void deleteDMThietBi(@PathVariable String maTB) {
         dmThietBiService.delete(maTB);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{maTB}")

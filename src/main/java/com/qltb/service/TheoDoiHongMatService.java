@@ -5,6 +5,7 @@ import com.qltb.entity.TheoDoiHongMat;
 import com.qltb.entity.ThietBi;
 import com.qltb.mapper.TheoDoiHongMatMapper;
 import com.qltb.model.request.create.TheoDoiHongMatCreateRequest;
+import com.qltb.model.request.update.TheoDoiHongMatUpdateRequest;
 import com.qltb.model.response.TheoDoiHongMatResponse;
 import com.qltb.repository.TheoDoiHongMatRepository;
 import com.qltb.repository.ThietBiRepository;
@@ -36,8 +37,8 @@ public class TheoDoiHongMatService {
         }
         if (request.isMat()) {
             thietBi.setTrangThai("Đã mất");
-            thietBi.setTinhTrang("Mất");
-            thietBi.setDangHoatDong(false);
+//            thietBi.setTinhTrang("Mất");
+//            thietBi.setDangHoatDong(false);
         }
         thietBiRepository.save(thietBi);
         return theoDoiHongMatMapper.toTheoDoiHongMatResponse(theoDoiHongMatRepository.save(theoDoiHongMat));
@@ -57,5 +58,15 @@ public class TheoDoiHongMatService {
         } else {
             return "PHM00001";
         }
+    }
+
+    public void delete(String maPhieuHongMat) {
+        theoDoiHongMatRepository.deleteById(maPhieuHongMat);
+    }
+
+    public void update(String maPhieuBao, TheoDoiHongMatUpdateRequest request) {
+        TheoDoiHongMat theoDoiHongMat = theoDoiHongMatRepository.findById(maPhieuBao).orElseThrow(null);
+        theoDoiHongMatMapper.updateTheoDoiHongMat(theoDoiHongMat, request);
+        theoDoiHongMatRepository.save(theoDoiHongMat);
     }
 }

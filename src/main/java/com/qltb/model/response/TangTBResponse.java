@@ -15,4 +15,6 @@ public class TangTBResponse {
     private LocalDate ngayLap;
     private String nguonCap;
     private String noiDung;
+    private boolean choDuyet;
+    private List<ChiTietTangTBResponse> chiTietTangTBList;
 }

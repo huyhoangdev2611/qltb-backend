@@ -1,6 +1,7 @@
 package com.qltb.controller;
 
 import com.qltb.model.request.create.TheoDoiHongMatCreateRequest;
+import com.qltb.model.request.update.TheoDoiHongMatUpdateRequest;
 import com.qltb.model.response.TheoDoiHongMatResponse;
 import com.qltb.service.TheoDoiHongMatService;
 import lombok.AccessLevel;
@@ -24,5 +25,15 @@ public class TheoDoiHongMatController {
     @GetMapping("/page")
     public Page<TheoDoiHongMatResponse> getAll(@RequestParam int page, @RequestParam int size) {
         return theoDoiHongMatService.getAll(page, size);
+    }
+
+    @DeleteMapping("/delete/{maPhieuHongMat}")
+    public void delete(@PathVariable String maPhieuHongMat) {
+        theoDoiHongMatService.delete(maPhieuHongMat);
+    }
+
+    @PatchMapping("/update/{maPhieuBao}")
+    public void update(@PathVariable String maPhieuBao, @RequestBody TheoDoiHongMatUpdateRequest request) {
+        theoDoiHongMatService.update(maPhieuBao, request);
     }
 }

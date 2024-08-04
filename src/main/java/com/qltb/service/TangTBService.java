@@ -1,13 +1,17 @@
 package com.qltb.service;
 
+import com.qltb.entity.ChiTietTangTB;
 import com.qltb.entity.GiaoVien;
 import com.qltb.entity.TangTB;
 import com.qltb.mapper.ChiTietTangTBMapper;
 import com.qltb.mapper.TangTBMapper;
 import com.qltb.model.request.create.TangTBCreateRequest;
 import com.qltb.model.request.create.ThietBiCreateRequest;
+import com.qltb.model.request.update.TangTBUpdateRequest;
 import com.qltb.model.response.TangTBResponse;
+import com.qltb.repository.ChiTietTangTBRepository;
 import com.qltb.repository.TangTBRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,11 +33,21 @@ public class TangTBService {
     TangTBMapper tangTBMapper;
     ChiTietTangTBMapper chiTietTangTBMapper;
     ThietBiService thietBiService;
+    ChiTietTangTBRepository chiTietTangTBRepository;
 
     public TangTBResponse create(TangTBCreateRequest request) {
         TangTB tangTB = tangTBMapper.toTangTB(request);
         tangTB.setMaPhieuTang(generateMaPhieuTang());
-        tangTB.setChiTietTangTBList(request.getChiTietTangTBList().stream().map(chiTietTangTBCreateRequest -> {
+        return tangTBMapper.toTangTBResponse(tangTBRepository.save(tangTB));
+    }
+
+    @Transactional
+    public TangTBResponse duyetTangTB(String maPhieuTang, TangTBUpdateRequest request) {
+        TangTB tangTB = tangTBRepository.findById(maPhieuTang).get();
+        tangTB.setNgayLap(request.getNgayLap());
+        tangTB.setNoiDung(request.getNoiDung());
+        tangTB.setChoDuyet(false);
+        List<ChiTietTangTB> chiTietTangTBList = new ArrayList<>(request.getChiTietTangTBList().stream().map(chiTietTangTBCreateRequest -> {
             chiTietTangTBCreateRequest.setMaPhieuTang(tangTB.getMaPhieuTang());
             ThietBiCreateRequest thietBiCreateRequest = ThietBiCreateRequest.builder()
                     .maNTB(chiTietTangTBCreateRequest.getMaNTB())
@@ -43,12 +59,17 @@ public class TangTBService {
             thietBiService.create(thietBiCreateRequest);
             return chiTietTangTBMapper.toChiTietTangTB(chiTietTangTBCreateRequest);
         }).toList());
+        tangTB.setChiTietTangTBList(chiTietTangTBList);
         return tangTBMapper.toTangTBResponse(tangTBRepository.save(tangTB));
     }
 
     public Page<TangTBResponse> getAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "maPhieuTang"));
-        return tangTBRepository.getAll(pageable).map(tangTBMapper::toTangTBResponse);
+        return tangTBRepository.getAll(pageable).map(tangTB -> {
+            TangTBResponse tangTBResponse = tangTBMapper.toTangTBResponse(tangTB);
+            tangTBResponse.setChiTietTangTBList(chiTietTangTBRepository.findAllByMaPhieuTang(tangTB.getMaPhieuTang()).stream().map(chiTietTangTBMapper::toChiTietTangTBResponse).toList());
+            return tangTBResponse;
+        });
     }
 
     private String generateMaPhieuTang() {
@@ -60,5 +81,9 @@ public class TangTBService {
         } else {
             return "PT00001";
         }
+    }
+
+    public void delete(String maPhieuTang) {
+        tangTBRepository.deleteById(maPhieuTang);
     }
 }

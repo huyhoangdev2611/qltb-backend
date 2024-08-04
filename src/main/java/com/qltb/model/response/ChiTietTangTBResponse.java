@@ -5,15 +5,16 @@ import com.qltb.entity.ThietBi;
 import com.qltb.entity.KhoPhong;
 import com.qltb.entity.TangTB;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 public class ChiTietTangTBResponse {
-    private String maPhieuTang;
-    private ThietBi thietBi;
-    private KhoPhong khoPhong;
-    private Date hanSuDung;
+    private String maNTB;
+    private String tenNTB;
+    private String maKP;
+    private LocalDate hanSuDung;
     private int soLuong;
     private int donGia;
-    private TangTB tangTB;
+    private String thanhTienString;
 }

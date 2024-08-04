@@ -3,6 +3,7 @@ package com.qltb.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class TangTB {
     private String maPhieuTang;
 
     @Column(name = "ngay_lap")
-    private Date ngayLap;
+    private LocalDate ngayLap;
 
     @Column(name = "ma_nguon_cap")
     private String maNguonCap;
@@ -26,6 +27,9 @@ public class TangTB {
 
     @Column(name = "noi_dung")
     private String noiDung;
+
+    @Column(name = "cho_duyet")
+    private boolean choDuyet = true;
 
     @OneToMany(mappedBy = "tangTB", cascade = CascadeType.ALL)
     private List<ChiTietTangTB> chiTietTangTBList;

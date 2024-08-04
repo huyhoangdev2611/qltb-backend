@@ -1,6 +1,7 @@
 package com.qltb.controller;
 
 import com.qltb.model.request.create.TangTBCreateRequest;
+import com.qltb.model.request.update.TangTBUpdateRequest;
 import com.qltb.model.response.TangTBResponse;
 import com.qltb.service.TangTBService;
 import lombok.AccessLevel;
@@ -26,6 +27,16 @@ public class TangTBController {
     @GetMapping("/page")
     public Page<TangTBResponse> getAll(@RequestParam int page, @RequestParam int size) {
         return tangTBService.getAll(page, size);
+    }
+
+    @PostMapping("/duyet-tang-tb/{maPhieuTang}")
+    public TangTBResponse duyetTangTB(@PathVariable String maPhieuTang, @RequestBody TangTBUpdateRequest request) {
+        return tangTBService.duyetTangTB(maPhieuTang, request);
+    }
+
+    @DeleteMapping("/delete/{maPhieuTang}")
+    public void delete(@PathVariable String maPhieuTang) {
+        tangTBService.delete(maPhieuTang);
     }
 
 }

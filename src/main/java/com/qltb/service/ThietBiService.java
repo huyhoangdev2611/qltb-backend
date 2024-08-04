@@ -4,11 +4,14 @@ import com.qltb.entity.GiaoVien;
 import com.qltb.entity.NhomThietBi;
 import com.qltb.entity.ThietBi;
 import com.qltb.mapper.ThietBiMapper;
+import com.qltb.model.request.create.BaoCaoThongKeCreateRequest;
 import com.qltb.model.request.create.ThietBiCreateRequest;
 import com.qltb.model.request.update.ThietBiUpdateRequest;
-import com.qltb.model.response.ThietBiResponse;
+import com.qltb.model.response.*;
 import com.qltb.repository.NhomThietBiRepository;
+import com.qltb.repository.TheoDoiHongMatRepository;
 import com.qltb.repository.ThietBiRepository;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,8 +20,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,12 +33,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ThietBiService {
-    @Autowired
     ThietBiRepository thietBiRepository;
-    @Autowired
     ThietBiMapper thietBiMapper;
-    @Autowired
     NhomThietBiRepository nhomThietBiRepository;
+    TheoDoiHongMatRepository theoDoiHongMatRepository;
 
     public Page<ThietBiResponse> getTBs(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "maCaBietTB"));
@@ -94,6 +97,76 @@ public class ThietBiService {
 
     public List<ThietBiResponse> getAllCoTheGhiGiam(String maCaBietTB) {
         return thietBiRepository.getAllCoTheGhiGiam(maCaBietTB).stream().map(thietBiMapper::toThietBiResponse).toList();
+    }
+
+    public List<ThietBiResponse> getAllCoTheKBHM() {
+        return thietBiRepository.getAllCoTheKBHM().stream().map(thietBiMapper::toThietBiResponse).toList();
+    }
+
+    @Transactional
+    public ThietBiResponse suaChua(String maPhieuBao, String maCaBietTB) {
+        Optional<ThietBi> thietBi = thietBiRepository.findById(maCaBietTB);
+        if (thietBi.isPresent()) {
+            thietBi.get().setTinhTrang("Dùng được");
+            thietBiRepository.save(thietBi.get());
+            theoDoiHongMatRepository.deleteById(maPhieuBao);
+        }
+        return thietBiMapper.toThietBiResponse(thietBi.get());
+    }
+
+    @Transactional
+    public ThietBiResponse timThay(String maPhieuBao, String maCaBietTB) {
+        Optional<ThietBi> thietBi = thietBiRepository.findById(maCaBietTB);
+        if (thietBi.isPresent()) {
+            thietBi.get().setTrangThai("Trong kho");
+            thietBiRepository.save(thietBi.get());
+            theoDoiHongMatRepository.deleteById(maPhieuBao);
+        }
+        return thietBiMapper.toThietBiResponse(thietBi.get());
+    }
+
+    public List<TKSoLuongTheoNTBResponse> tkSoLuongTheoNTB() {
+        return thietBiRepository.tkSoLuongTheoNTB();
+    }
+
+    public List<TKTBTangResponse> tkTBTang(BaoCaoThongKeCreateRequest request) {
+        LocalDate tuNgay = request.getTuNgay();
+        LocalDate denNgay = request.getDenNgay();
+        return thietBiRepository.tkTBTang(tuNgay, denNgay);
+    }
+
+    public List<TKThanhLyResponse> tkThanhLyTB(BaoCaoThongKeCreateRequest request) {
+        LocalDate tuNgay = request.getTuNgay();
+        LocalDate denNgay = request.getDenNgay();
+        return thietBiRepository.tkThanhLyTB(tuNgay, denNgay);
+    }
+
+    public List<TKTinhHinhMuonTBCuaGVResponse> tkTinhHinhMuonTBCuaGV(BaoCaoThongKeCreateRequest request) {
+        LocalDate tuNgay = request.getTuNgay();
+        LocalDate denNgay = request.getDenNgay();
+        List<TKTinhHinhMuonTBCuaGVResponse> responses = thietBiRepository.tkTinhHinhMuonTBCuaGV(tuNgay, denNgay);
+        responses.forEach(response -> {
+            response.setThongTins(thietBiRepository.thongTinMuonTBCuaGiaoVien(response.getTenGV(), tuNgay, denNgay));
+        });
+        return responses;
+    }
+
+    public List<TKThietBiDangMuonResponse> tkThietBiDangMuon(BaoCaoThongKeCreateRequest request) {
+        LocalDate tuNgay = request.getTuNgay();
+        LocalDate denNgay = request.getDenNgay();
+        return thietBiRepository.tkThietBiDangMuon(tuNgay, denNgay);
+    }
+
+    public List<TKThietBiDangMuonResponse> tkTBMuonQuaHan(BaoCaoThongKeCreateRequest request) {
+        LocalDate tuNgay = request.getTuNgay();
+        LocalDate denNgay = request.getDenNgay();
+        return thietBiRepository.tkTBMuonQuaHan(tuNgay, denNgay);
+    }
+
+    public List<TKSoLuongHongMatTieuHaoResponse> tkSoLuongHongMatTieuHao(BaoCaoThongKeCreateRequest request) {
+        LocalDate tuNgay = request.getTuNgay();
+        LocalDate denNgay = request.getDenNgay();
+        return thietBiRepository.tkSoLuongHongMatTieuHao(tuNgay, denNgay);
     }
 
     public List<ThietBiResponse> getHienTrangHoatDongTot() {

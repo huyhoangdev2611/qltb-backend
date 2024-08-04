@@ -3,6 +3,7 @@ package com.qltb.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -29,7 +30,7 @@ public class ChiTietTangTB {
     private KhoPhong khoPhong;
 
     @Column(name = "han_su_dung")
-    private Date hanSuDung;
+    private LocalDate hanSuDung;
 
     @Column(name = "so_luong")
     private int soLuong;

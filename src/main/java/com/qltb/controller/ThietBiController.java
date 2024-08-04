@@ -1,5 +1,6 @@
 package com.qltb.controller;
 
+import com.qltb.model.request.create.BaoCaoThongKeCreateRequest;
 import com.qltb.model.request.create.ThietBiCreateRequest;
 import com.qltb.model.response.DashboardDataResponse;
 import com.qltb.model.response.ThietBiResponse;
@@ -77,5 +78,33 @@ public class ThietBiController {
 
         DashboardDataResponse response = new DashboardDataResponse(totalDevices, devicesInStorage, brokenDevices, lostDevices);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/get-all-co-the-kbhm")
+    public List<ThietBiResponse> getAllCoTheKBHM() {
+        return thietBiService.getAllCoTheKBHM();
+    }
+
+    @PatchMapping("/sua-chua")
+    public ThietBiResponse suaChua(@RequestParam String maPhieuBao, @RequestParam String maCaBietTB) {
+        return thietBiService.suaChua(maPhieuBao, maCaBietTB);
+    }
+
+    @PatchMapping("/tim-thay")
+    public ThietBiResponse timThay(@RequestParam String maPhieuBao, @RequestParam String maCaBietTB) {
+        return thietBiService.timThay(maPhieuBao, maCaBietTB);
+    }
+
+    @PostMapping("/bao-cao-thong-ke")
+    public ResponseEntity<?> baoCaoThongKe(@RequestBody BaoCaoThongKeCreateRequest request) {
+        return switch (request.getOption()) {
+            case "op2" -> ResponseEntity.ok(thietBiService.tkTBTang(request));
+            case "op3" -> ResponseEntity.ok(thietBiService.tkThanhLyTB(request));
+            case "op4" -> ResponseEntity.ok(thietBiService.tkTinhHinhMuonTBCuaGV(request));
+            case "op5" -> ResponseEntity.ok(thietBiService.tkThietBiDangMuon(request));
+            case "op6" -> ResponseEntity.ok(thietBiService.tkTBMuonQuaHan(request));
+            case "op7" -> ResponseEntity.ok(thietBiService.tkSoLuongHongMatTieuHao(request));
+            default -> ResponseEntity.ok(thietBiService.tkSoLuongTheoNTB());
+        };
     }
 }

@@ -21,6 +21,9 @@ public class MuonTB {
     @Column(name = "ngay_hen_tra")
     private LocalDate ngayHenTra;
 
+    @Column(name = "trang_thai")
+    private String trangThai;
+
     @Column(name = "ma_gv")
     private String maGV;
 
@@ -30,9 +33,6 @@ public class MuonTB {
 
     @Column(name = "muc_dich")
     private String mucDich;
-
-    @Column(name = "trang_thai")
-    private String trangThai;
 
     @OneToMany(mappedBy = "muonTB")
     private List<ChiTietMuonTB> chiTietMuonTBList;
