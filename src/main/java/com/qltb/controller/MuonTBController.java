@@ -2,6 +2,7 @@ package com.qltb.controller;
 
 import com.qltb.model.request.create.MuonTBCreateRequest;
 import com.qltb.model.request.update.MuonTBUpdateRequest;
+import com.qltb.model.request.update.MuonTBUpdateStatusRequest;
 import com.qltb.model.response.MonthlyBorrowedDevicesResponse;
 import com.qltb.model.response.MuonTBResponse;
 import com.qltb.service.MuonTBService;
@@ -51,23 +52,29 @@ public class MuonTBController {
         muonTBService.delete(id);
     }
 
-    @PutMapping("/{maPhieuMuon}")
-    public ResponseEntity<MuonTBResponse> updateMuonTB(@PathVariable String maPhieuMuon, @RequestBody MuonTBUpdateRequest updateRequest) {
-        MuonTBResponse updatedMuonTB = muonTBService.updateMuonTB(maPhieuMuon, updateRequest);
+    @PutMapping("/update-status/{maPhieuMuon}")
+    public ResponseEntity<MuonTBResponse> updateMuonTBStatus(@PathVariable String maPhieuMuon, @RequestBody MuonTBUpdateStatusRequest updateRequest) {
+        MuonTBResponse updatedMuonTB = muonTBService.updateMuonTBStatus(maPhieuMuon, updateRequest);
         return ResponseEntity.ok(updatedMuonTB);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<Page<MuonTBResponse>> searchByGiaoVien(
-            @RequestParam(required = false, defaultValue = "") String tenGiaoVien,
-            @RequestParam int page,
-            @RequestParam int size) {
-        return ResponseEntity.ok(muonTBService.searchByGiaoVien(tenGiaoVien, page, size));
+    @PutMapping("/update-info/{maPhieuMuon}")
+    public ResponseEntity<MuonTBResponse> updateMuonTBInfo(@PathVariable String maPhieuMuon, @RequestBody MuonTBUpdateRequest updateRequest) {
+        MuonTBResponse updatedMuonTB = muonTBService.updateMuonTBInfo(maPhieuMuon, updateRequest);
+        return ResponseEntity.ok(updatedMuonTB);
     }
 
     @GetMapping("/monthly-borrowed")
     public ResponseEntity<List<MonthlyBorrowedDevicesResponse>> getMonthlyBorrowedDevices() {
         List<MonthlyBorrowedDevicesResponse> data = muonTBService.getMonthlyBorrowedDevices();
         return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<MuonTBResponse>> searchByGiaoVien(
+            @RequestParam(name = "name", required = true) String name,
+            @RequestParam int page,
+            @RequestParam int size) {
+        return ResponseEntity.ok(muonTBService.searchByGiaoVien(name, page, size));
     }
 }

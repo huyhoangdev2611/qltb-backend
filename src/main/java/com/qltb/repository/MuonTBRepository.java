@@ -18,9 +18,11 @@ public interface MuonTBRepository extends JpaRepository<MuonTB, String> {
     @Query("SELECT m FROM MuonTB m")
     Page<MuonTB> getAll(Pageable pageable);
 
-    Page<MuonTB> findByGiaoVien_TenGVContainingIgnoreCaseOrderByMaPhieuMuonAsc(Pageable pageable, String tenGiaoVien);
 
     @Query("SELECT new com.qltb.model.response.MonthlyBorrowedDevicesResponse(MONTH(m.ngayMuon), COUNT(m)) " +
             "FROM MuonTB m GROUP BY MONTH(m.ngayMuon)")
     List<MonthlyBorrowedDevicesResponse> countMonthlyBorrowedDevices();
+
+    Page<MuonTB> findByGiaoVien_TenGVContainingIgnoreCase(Pageable pageable, String name);
+
 }

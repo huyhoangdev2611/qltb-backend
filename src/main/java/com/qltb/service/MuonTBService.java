@@ -7,6 +7,7 @@ import com.qltb.mapper.ChiTietMuonTBMapper;
 import com.qltb.mapper.MuonTBMapper;
 import com.qltb.model.request.create.MuonTBCreateRequest;
 import com.qltb.model.request.update.MuonTBUpdateRequest;
+import com.qltb.model.request.update.MuonTBUpdateStatusRequest;
 import com.qltb.model.response.MonthlyBorrowedDevicesResponse;
 import com.qltb.model.response.MuonTBResponse;
 import com.qltb.repository.MuonTBRepository;
@@ -99,19 +100,14 @@ public class MuonTBService {
         });
     }
 
-    private String generateMaPhieuMuon() {
-        Optional<MuonTB> lastMuonTB = muonTBRepository.findTopByOrderByMaPhieuMuonDesc();
-        if (lastMuonTB.isPresent()) {
-            String lastMaPhieuMuon = lastMuonTB.get().getMaPhieuMuon();
-            int nextId = Integer.parseInt(lastMaPhieuMuon.substring(2)) + 1;
-            return String.format("PM%05d", nextId);
-        } else {
-            return "PM00001";
-        }
+    public Page<MuonTBResponse> searchByGiaoVien(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return muonTBRepository.findByGiaoVien_TenGVContainingIgnoreCase(pageable, name)
+                .map(muonTBMapper::toMuonTBResponse);
     }
 
     @Transactional
-    public MuonTBResponse updateMuonTB(String maPhieuMuon, MuonTBUpdateRequest updateRequest) {
+    public MuonTBResponse updateMuonTBStatus(String maPhieuMuon, MuonTBUpdateStatusRequest updateRequest) {
         MuonTB muonTB = muonTBRepository.findById(maPhieuMuon)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid loan ID"));
 
@@ -125,10 +121,81 @@ public class MuonTBService {
         return muonTBMapper.toMuonTBResponse(updatedMuonTB);
     }
 
-    public Page<MuonTBResponse> searchByGiaoVien(String tenGiaoVien, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return muonTBRepository.findByGiaoVien_TenGVContainingIgnoreCaseOrderByMaPhieuMuonAsc(pageable, tenGiaoVien)
-                .map(this::updateStatusAndMapToResponse);
+    @Transactional
+    public MuonTBResponse updateMuonTBInfo(String maPhieuMuon, MuonTBUpdateRequest updateRequest) {
+        // Log the request details
+        System.out.println("Received update request for loan ID: " + maPhieuMuon);
+        System.out.println("Update details: " + updateRequest);
+
+        MuonTB muonTB = muonTBRepository.findById(maPhieuMuon)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid loan ID: " + maPhieuMuon));
+
+        // Validate the update request
+        validateUpdateRequest(updateRequest);
+
+        // Update only if the field value has changed
+        if (updateRequest.getNgayMuon() != null && !updateRequest.getNgayMuon().equals(muonTB.getNgayMuon())) {
+            muonTB.setNgayMuon(updateRequest.getNgayMuon());
+        }
+        if (updateRequest.getNgayHenTra() != null && !updateRequest.getNgayHenTra().equals(muonTB.getNgayHenTra())) {
+            muonTB.setNgayHenTra(updateRequest.getNgayHenTra());
+        }
+        if (updateRequest.getMaGV() != null && !updateRequest.getMaGV().equals(muonTB.getMaGV())) {
+            muonTB.setMaGV(updateRequest.getMaGV());
+        }
+        if (updateRequest.getMucDich() != null && !updateRequest.getMucDich().equals(muonTB.getMucDich())) {
+            muonTB.setMucDich(updateRequest.getMucDich());
+        }
+        if (updateRequest.getTrangThai() != null && !updateRequest.getTrangThai().equals(muonTB.getTrangThai())) {
+            muonTB.setTrangThai(updateRequest.getTrangThai());
+        }
+
+        List<ChiTietMuonTB> chiTietMuonTBList = Optional.ofNullable(updateRequest.getChiTietMuonTBList())
+                .orElseGet(List::of)
+                .stream()
+                .map(chiTietRequest -> {
+                    ChiTietMuonTB chiTietMuonTB = chiTietMuonTBMapper.toChiTietMuonTB(chiTietRequest);
+                    chiTietMuonTB.setMaCaBietTB(chiTietRequest.getMaCaBietTB());
+                    chiTietMuonTB.setMuonTB(muonTB);
+                    chiTietMuonTB.setMaPhieuMuon(muonTB.getMaPhieuMuon());
+
+                    // Update device status to "Đang mượn"
+                    ThietBi thietBi = thietBiRepository.findById(chiTietRequest.getMaCaBietTB())
+                            .orElseThrow(() -> new IllegalArgumentException("Invalid device ID: " + chiTietRequest.getMaCaBietTB()));
+                    thietBi.setTrangThai("Đang mượn");
+                    thietBiRepository.save(thietBi);
+
+                    return chiTietMuonTB;
+                })
+                .collect(Collectors.toList());
+
+        chiTietMuonTBRepository.saveAll(chiTietMuonTBList);
+
+        muonTB.setChiTietMuonTBList(chiTietMuonTBList);
+
+        MuonTB updatedMuonTB = muonTBRepository.save(muonTB);
+        return muonTBMapper.toMuonTBResponse(updatedMuonTB);
+    }
+
+    private void validateUpdateRequest(MuonTBUpdateRequest updateRequest) {
+        // Implement your validation logic here
+        // For example, check if the dates are valid
+        if (updateRequest.getNgayMuon() != null && updateRequest.getNgayHenTra() != null &&
+                updateRequest.getNgayMuon().isAfter(updateRequest.getNgayHenTra())) {
+            throw new IllegalArgumentException("NgayMuon cannot be after NgayHenTra");
+        }
+    }
+
+
+    private String generateMaPhieuMuon() {
+        Optional<MuonTB> lastMuonTB = muonTBRepository.findTopByOrderByMaPhieuMuonDesc();
+        if (lastMuonTB.isPresent()) {
+            String lastMaPhieuMuon = lastMuonTB.get().getMaPhieuMuon();
+            int nextId = Integer.parseInt(lastMaPhieuMuon.substring(2)) + 1;
+            return String.format("PM%05d", nextId);
+        } else {
+            return "PM00001";
+        }
     }
 
     private MuonTBResponse updateStatusAndMapToResponse(MuonTB muonTB) {

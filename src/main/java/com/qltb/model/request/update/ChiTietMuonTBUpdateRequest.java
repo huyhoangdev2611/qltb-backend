@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ChiTietMuonTBUpdateRequest {
+    private String maCaBietTB;
     private String tinhTrangKhiMuon;
-    private String muonTBId;
 }
