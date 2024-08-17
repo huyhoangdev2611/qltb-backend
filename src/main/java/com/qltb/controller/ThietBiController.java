@@ -1,5 +1,6 @@
 package com.qltb.controller;
 
+import com.qltb.model.request.create.BaoCaoKiemKeTB;
 import com.qltb.model.request.create.BaoCaoThongKeCreateRequest;
 import com.qltb.model.request.create.ThietBiCreateRequest;
 import com.qltb.model.response.DashboardDataResponse;
@@ -106,5 +107,10 @@ public class ThietBiController {
             case "op7" -> ResponseEntity.ok(thietBiService.tkSoLuongHongMatTieuHao(request));
             default -> ResponseEntity.ok(thietBiService.tkSoLuongTheoNTB());
         };
+    }
+
+    @PostMapping("/bao-cao-kiem-ke-tb")
+    public ResponseEntity<?> baoCaoKiemKeTB(@RequestBody BaoCaoKiemKeTB request) {
+        return ResponseEntity.ok(thietBiService.baoCaoKiemKeTB(request));
     }
 }

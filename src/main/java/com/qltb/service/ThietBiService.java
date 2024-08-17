@@ -4,6 +4,7 @@ import com.qltb.entity.GiaoVien;
 import com.qltb.entity.NhomThietBi;
 import com.qltb.entity.ThietBi;
 import com.qltb.mapper.ThietBiMapper;
+import com.qltb.model.request.create.BaoCaoKiemKeTB;
 import com.qltb.model.request.create.BaoCaoThongKeCreateRequest;
 import com.qltb.model.request.create.ThietBiCreateRequest;
 import com.qltb.model.request.update.ThietBiUpdateRequest;
@@ -116,13 +117,7 @@ public class ThietBiService {
 
     @Transactional
     public ThietBiResponse timThay(String maPhieuBao, String maCaBietTB) {
-        Optional<ThietBi> thietBi = thietBiRepository.findById(maCaBietTB);
-        if (thietBi.isPresent()) {
-            thietBi.get().setTrangThai("Trong kho");
-            thietBiRepository.save(thietBi.get());
-            theoDoiHongMatRepository.deleteById(maPhieuBao);
-        }
-        return thietBiMapper.toThietBiResponse(thietBi.get());
+        return null;
     }
 
     public List<TKSoLuongTheoNTBResponse> tkSoLuongTheoNTB() {
@@ -210,4 +205,8 @@ public class ThietBiService {
         return thietBiRepository.countByTrangThaiDaMat();
     }
 
+    public List<ThietBiResponse> baoCaoKiemKeTB(BaoCaoKiemKeTB request) {
+        return thietBiRepository.baoCaoKiemKeTB(request.getTuNgay(), request.getDenNgay(),
+                request.isHong(), request.isMat(), request.isDungDuoc(), request.isDangHoatDong());
+    }
 }

@@ -165,4 +165,24 @@ public interface ThietBiRepository extends JpaRepository<ThietBi, String> {
         GROUP BY tb.nhomThietBi.tenNTB
     """)
     List<TKSoLuongHongMatTieuHaoResponse> tkSoLuongHongMatTieuHao(LocalDate tuNgay, LocalDate denNgay);
+
+    @Query("""
+                    select new com.qltb.model.response.ThietBiResponse(
+                        tb.maCaBietTB,
+                        tb.maNTB,
+                        tb.nhomThietBi.tenNTB,
+                        tb.khoPhong.tenKP,
+                        tb.trangThai,
+                        tb.tinhTrang,
+                        tb.dangHoatDong
+                    ) 
+                    from ThietBi tb
+                    where tb.ngayNhap >= :tuNgay and tb.ngayNhap <= :denNgay
+                    and (
+                    (tb.trangThai = 'Đã mất' and :isMat = true) 
+                    or (tb.tinhTrang = 'Hỏng' and :isHong = true) 
+                    or (tb.tinhTrang = 'Dùng được' and :isDungDuoc = true) 
+                    or (tb.dangHoatDong = true and :isDangHoatDong = true))
+            """)
+    List<ThietBiResponse> baoCaoKiemKeTB(LocalDate tuNgay, LocalDate denNgay, boolean isHong, boolean isMat, boolean isDungDuoc, boolean isDangHoatDong);
 }
