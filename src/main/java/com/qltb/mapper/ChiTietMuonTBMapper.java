@@ -10,6 +10,7 @@ import org.mapstruct.Mapping;
 public interface ChiTietMuonTBMapper {
     ChiTietMuonTB toChiTietMuonTB(ChiTietMuonTBCreateRequest request);
     @Mapping(target = "tenThietBi", source = "thietBi.nhomThietBi.tenNTB")
+    @Mapping(target = "thietBiTieuHao", source = "thietBi.nhomThietBi.tbTieuHao")
     ChiTietMuonTBResponse toChiTietMuonTBResponse(ChiTietMuonTB chiTietMuonTB);
 
 }

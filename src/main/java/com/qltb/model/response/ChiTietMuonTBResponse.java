@@ -8,4 +8,5 @@ public class ChiTietMuonTBResponse {
     private String tenThietBi;
     private String tinhTrangKhiMuon;
     private String maPhieuMuon;
+    private boolean thietBiTieuHao;
 }

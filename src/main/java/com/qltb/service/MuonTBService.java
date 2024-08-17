@@ -2,6 +2,7 @@ package com.qltb.service;
 
 import com.qltb.entity.ChiTietMuonTB;
 import com.qltb.entity.MuonTB;
+import com.qltb.entity.NhomThietBi;
 import com.qltb.entity.ThietBi;
 import com.qltb.mapper.ChiTietMuonTBMapper;
 import com.qltb.mapper.MuonTBMapper;
@@ -92,9 +93,13 @@ public class MuonTBService {
         return muonTBRepository.findAll(pageable).map(muonTB -> {
             MuonTBResponse muonTBResponse = muonTBMapper.toMuonTBResponse(muonTB);
             for (int i = 0; i < muonTBResponse.getChiTietMuonTBList().size(); i++) {
-                muonTBResponse.getChiTietMuonTBList().get(i).setTenThietBi(
-                        muonTB.getChiTietMuonTBList().get(i).getThietBi().getNhomThietBi().getTenNTB()
-                );
+                ChiTietMuonTB chiTietMuonTB = muonTB.getChiTietMuonTBList().get(i);
+                NhomThietBi nhomThietBi = chiTietMuonTB.getThietBi().getNhomThietBi();
+
+                muonTBResponse.getChiTietMuonTBList().get(i).setTenThietBi(nhomThietBi.getTenNTB());
+
+                // Set tbTieuHao value
+                muonTBResponse.getChiTietMuonTBList().get(i).setThietBiTieuHao(nhomThietBi.isTbTieuHao());
             }
             return muonTBResponse;
         });
@@ -202,12 +207,17 @@ public class MuonTBService {
         updateStatusIfOverdue(muonTB);
         MuonTBResponse muonTBResponse = muonTBMapper.toMuonTBResponse(muonTB);
         for (int i = 0; i < muonTBResponse.getChiTietMuonTBList().size(); i++) {
-            muonTBResponse.getChiTietMuonTBList().get(i).setTenThietBi(
-                    muonTB.getChiTietMuonTBList().get(i).getThietBi().getNhomThietBi().getTenNTB()
-            );
+            ChiTietMuonTB chiTietMuonTB = muonTB.getChiTietMuonTBList().get(i);
+            NhomThietBi nhomThietBi = chiTietMuonTB.getThietBi().getNhomThietBi();
+
+            muonTBResponse.getChiTietMuonTBList().get(i).setTenThietBi(nhomThietBi.getTenNTB());
+
+            // Set tbTieuHao value
+            muonTBResponse.getChiTietMuonTBList().get(i).setThietBiTieuHao(nhomThietBi.isTbTieuHao());
         }
         return muonTBResponse;
     }
+
 
     private void updateStatusIfOverdue(MuonTB muonTB) {
         LocalDate ngayHenTra = muonTB.getNgayHenTra();

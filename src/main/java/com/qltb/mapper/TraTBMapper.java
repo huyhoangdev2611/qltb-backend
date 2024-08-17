@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ChiTietTraTBMapper.class})
 public interface TraTBMapper {
     TraTB toTraTB(TraTBCreateRequest request);
 
@@ -16,6 +16,7 @@ public interface TraTBMapper {
     @Mapping(target = "tenGiaoVien", source = "muonTB.giaoVien.tenGV")
     @Mapping(target = "ngayMuon", source = "muonTB.ngayMuon")
     @Mapping(target = "ngayTra", source = "ngayTra")
+    @Mapping(target = "chiTietTraTBList", source = "chiTietTraTBList")  // Map danh sách chi tiết thiết bị
     TraTBResponse toTraTBResponse(TraTB traTB);
 
     default void updateTraTBFromRequest(TraTBCreateRequest request, @MappingTarget TraTB traTB) {

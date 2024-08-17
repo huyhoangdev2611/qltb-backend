@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+
 
 @Data
 @AllArgsConstructor
@@ -24,6 +24,6 @@ public class TKThietBiDangMuonResponse {
         this.nguoiMuon = nguoiMuon;
         this.ngayMuon = ngayMuon;
         this.ngayHenTra = ngayHenTra;
-        this.quaHan = ChronoUnit.DAYS.between(ngayHenTra, LocalDate.now()) + " ngày";
+//        this.quaHan = ChronoUnit.DAYS.between(ngayHenTra, LocalDate.now()) + " ngày";
     }
 }

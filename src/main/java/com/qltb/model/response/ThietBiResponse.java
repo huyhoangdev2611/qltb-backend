@@ -18,5 +18,6 @@ public class ThietBiResponse {
     private LocalDate hanSuDung;
     private String trangThai;
     private String tinhTrang;
+    private boolean thietBiTieuHao;
     private boolean dangHoatDong;
 }

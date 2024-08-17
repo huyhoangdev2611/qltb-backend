@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface TraTBRepository extends JpaRepository<TraTB, String> {
     Optional<TraTB>  findTopByOrderByMaPhieuTraDesc();
     Page<TraTB> findAll(Pageable pageable);
-    Page<TraTB> findByMuonTB_MaPhieuMuonContainingIgnoreCaseOrderByMaPhieuTraAsc(Pageable pageable, String maPhieuMuon);
+    Page<TraTB> findByMuonTB_GiaoVien_TenGVContainingIgnoreCaseOrderByMaPhieuTraAsc(Pageable pageable, String tenGV);
 
 }

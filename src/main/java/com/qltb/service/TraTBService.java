@@ -111,9 +111,9 @@ public class TraTBService {
         }
     }
 
-    public Page<TraTBResponse> searchByMuonTB(String maPhieuMuon, int page, int size) {
+    public Page<TraTBResponse> searchByTenGV(String tenGV, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return traTBRepository.findByMuonTB_MaPhieuMuonContainingIgnoreCaseOrderByMaPhieuTraAsc(pageable, maPhieuMuon)
+        return traTBRepository.findByMuonTB_GiaoVien_TenGVContainingIgnoreCaseOrderByMaPhieuTraAsc(pageable, tenGV)
                 .map(traTBMapper::toTraTBResponse);
     }
 }

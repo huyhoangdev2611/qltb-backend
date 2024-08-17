@@ -12,5 +12,6 @@ public interface ThietBiMapper {
 
     @Mapping(target = "khoPhong", source = "thietBi.khoPhong.tenKP")
     @Mapping(target = "tenNTB", source = "thietBi.nhomThietBi.tenNTB")
+    @Mapping(target = "thietBiTieuHao", source = "thietBi.nhomThietBi.tbTieuHao")
     ThietBiResponse toThietBiResponse(ThietBi thietBi);
 }
