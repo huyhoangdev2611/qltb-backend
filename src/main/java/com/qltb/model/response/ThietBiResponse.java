@@ -19,4 +19,14 @@ public class ThietBiResponse {
     private String trangThai;
     private String tinhTrang;
     private boolean dangHoatDong;
+
+    public ThietBiResponse(String maCaBietTB, String maNTB, String tenNTB, String khoPhong, String trangThai, String tinhTrang, boolean dangHoatDong) {
+        this.maCaBietTB = maCaBietTB;
+        this.maNTB = maNTB;
+        this.tenNTB = tenNTB;
+        this.khoPhong = khoPhong;
+        this.trangThai = trangThai;
+        this.tinhTrang = tinhTrang;
+        this.dangHoatDong = dangHoatDong;
+    }
 }
