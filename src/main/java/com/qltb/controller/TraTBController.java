@@ -43,7 +43,7 @@ public class TraTBController {
 
     @GetMapping("/search")
     public ResponseEntity<Page<TraTBResponse>> searchByTenGV(
-            @RequestParam String tenGV, @RequestParam int page, @RequestParam int size) {
-        return ResponseEntity.ok(traTBService.searchByTenGV(tenGV, page, size));
+            @RequestParam String name, @RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(traTBService.searchByTenGV(name, page, size));
     }
 }
