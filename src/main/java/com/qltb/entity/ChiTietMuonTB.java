@@ -15,7 +15,7 @@ public class ChiTietMuonTB {
     private String maCaBietTB;
 
     @Column(name = "tinh_trang_khi_muon")
-    private String tinhTrangKhiMuon;
+    private String tinhTrang;
 
     @Column(name = "ma_phieu_muon")
     private String maPhieuMuon;

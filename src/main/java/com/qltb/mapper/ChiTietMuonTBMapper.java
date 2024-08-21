@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ChiTietMuonTBMapper {
     ChiTietMuonTB toChiTietMuonTB(ChiTietMuonTBCreateRequest request);
-    @Mapping(target = "tenThietBi", source = "thietBi.nhomThietBi.tenNTB")
+    @Mapping(target = "tenNTB", source = "thietBi.nhomThietBi.tenNTB")
     @Mapping(target = "thietBiTieuHao", source = "thietBi.nhomThietBi.tbTieuHao")
     ChiTietMuonTBResponse toChiTietMuonTBResponse(ChiTietMuonTB chiTietMuonTB);
 

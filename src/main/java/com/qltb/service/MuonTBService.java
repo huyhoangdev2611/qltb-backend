@@ -96,7 +96,7 @@ public class MuonTBService {
                 ChiTietMuonTB chiTietMuonTB = muonTB.getChiTietMuonTBList().get(i);
                 NhomThietBi nhomThietBi = chiTietMuonTB.getThietBi().getNhomThietBi();
 
-                muonTBResponse.getChiTietMuonTBList().get(i).setTenThietBi(nhomThietBi.getTenNTB());
+                muonTBResponse.getChiTietMuonTBList().get(i).setTenNTB(nhomThietBi.getTenNTB());
 
                 // Set tbTieuHao value
                 muonTBResponse.getChiTietMuonTBList().get(i).setThietBiTieuHao(nhomThietBi.isTbTieuHao());
@@ -210,7 +210,7 @@ public class MuonTBService {
             ChiTietMuonTB chiTietMuonTB = muonTB.getChiTietMuonTBList().get(i);
             NhomThietBi nhomThietBi = chiTietMuonTB.getThietBi().getNhomThietBi();
 
-            muonTBResponse.getChiTietMuonTBList().get(i).setTenThietBi(nhomThietBi.getTenNTB());
+            muonTBResponse.getChiTietMuonTBList().get(i).setTenNTB(nhomThietBi.getTenNTB());
 
             // Set tbTieuHao value
             muonTBResponse.getChiTietMuonTBList().get(i).setThietBiTieuHao(nhomThietBi.isTbTieuHao());

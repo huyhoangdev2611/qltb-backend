@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class ChiTietMuonTBCreateRequest {
     private String maCaBietTB;
-    private String tinhTrangKhiMuon;
+    private String tinhTrang;
 }

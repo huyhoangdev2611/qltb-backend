@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class ChiTietMuonTBResponse {
     private String maCaBietTB;
-    private String tenThietBi;
-    private String tinhTrangKhiMuon;
+    private String tenNTB;
+    private String tinhTrang;
     private String maPhieuMuon;
     private boolean thietBiTieuHao;
 }

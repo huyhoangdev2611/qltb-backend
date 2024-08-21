@@ -11,8 +11,8 @@ public interface ChiTietTraTBMapper {
     ChiTietTraTB toChiTietTraTB(ChiTietTraTBCreateRequest request);
 
     @Mapping(target = "maCaBietTB", source = "thietBi.maCaBietTB")
-    @Mapping(target = "tenThietBi", source = "thietBi.nhomThietBi.tenNTB")  // Lấy tên thiết bị từ NhomThietBi
-    @Mapping(target = "tinhTrangKhiMuon", source = "thietBi.tinhTrang")  // Lấy tình trạng khi mượn từ ThietBi
+    @Mapping(target = "tenNTB", source = "thietBi.nhomThietBi.tenNTB")  // Lấy tên thiết bị từ NhomThietBi
+    @Mapping(target = "tinhTrang", source = "thietBi.tinhTrang")  // Lấy tình trạng khi mượn từ ThietBi
     @Mapping(target = "thietBiTieuHao", source = "thietBi.nhomThietBi.tbTieuHao")  // Lấy thietBiTieuHao từ ThietBi
     ChiTietTraTBResponse toChiTietTraTBResponse(ChiTietTraTB chiTietTraTB);
 }
