@@ -13,11 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class GiaoVien {
+
     @Id
     @Column(name = "ma_gv")
     private String maGV;
 
-    @Column(name = "ten_gv")
+    @Column(name = "ten_gv", nullable = false)
     private String tenGV;
 
     @Column(name = "gioi_tinh")
@@ -44,4 +45,7 @@ public class GiaoVien {
 
     @OneToMany(mappedBy = "giaoVien")
     private List<MuonTB> muonTBs;
+
+    @OneToOne(mappedBy = "giaoVien")
+    private User user;
 }
