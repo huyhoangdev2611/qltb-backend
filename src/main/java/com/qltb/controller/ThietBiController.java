@@ -3,6 +3,7 @@ package com.qltb.controller;
 import com.qltb.model.request.create.BaoCaoKiemKeTB;
 import com.qltb.model.request.create.BaoCaoThongKeCreateRequest;
 import com.qltb.model.request.create.ThietBiCreateRequest;
+import com.qltb.model.request.update.StatusThietBiUpdateRequest;
 import com.qltb.model.response.DashboardDataResponse;
 import com.qltb.model.response.ThietBiResponse;
 import com.qltb.service.ThietBiService;
@@ -45,14 +46,22 @@ public class ThietBiController {
     }
 
     @GetMapping("/search")
-    public Page<ThietBiResponse> search(@RequestParam(name = "name") String maCaBietTB, @RequestParam int page, @RequestParam int size) {
-        return thietBiService.search(maCaBietTB, page, size);
+    public Page<ThietBiResponse> search(@RequestParam(name = "name") String searchTerm,
+                                        @RequestParam int page,
+                                        @RequestParam int size) {
+        return thietBiService.search(searchTerm, page, size);
     }
 
     @GetMapping("/search-all")
-    public List<ThietBiResponse> searchAll(@RequestParam(name = "name") String maCaBietTB) {
-        return thietBiService.search(maCaBietTB);
+    public List<ThietBiResponse> searchAll(@RequestParam(name = "name") String searchTerm) {
+        return thietBiService.search(searchTerm);
     }
+
+    @PutMapping("/status/{maCaBietTB}")
+    public ThietBiResponse updateStatus(@PathVariable String maCaBietTB, @RequestBody StatusThietBiUpdateRequest request) {
+        return thietBiService.updateStatusThietBi(maCaBietTB, request);
+    }
+
 
     @GetMapping("/get-all-co-the-ghi-giam")
     public List<ThietBiResponse> getAllCoTheGhiGiam() {

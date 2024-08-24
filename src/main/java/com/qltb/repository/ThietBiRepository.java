@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -28,9 +29,17 @@ public interface ThietBiRepository extends JpaRepository<ThietBi, String> {
     @Query("select tb from ThietBi tb where tb.trangThai not in ('Đã thanh lý', 'Đã mất') order by tb.maCaBietTB")
     List<ThietBi> findAllChuaThanhLy(Sort maCaBietTB);
 
-    Page<ThietBi> findByMaCaBietTBContainingIgnoreCaseOrderByMaCaBietTB(String maCaBietTB, Pageable pageable);
+    @Query("SELECT t FROM ThietBi t WHERE " +
+            "LOWER(t.maCaBietTB) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+            "LOWER(t.nhomThietBi.tenNTB) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+            "ORDER BY t.maCaBietTB")
+    Page<ThietBi> searchByMaCaBietTBOrTenNTB(@Param("searchTerm") String searchTerm, Pageable pageable);
 
-    List<ThietBi> findByMaCaBietTBContainingIgnoreCaseOrderByMaCaBietTB(String maCaBietTB);
+    @Query("SELECT t FROM ThietBi t WHERE " +
+            "LOWER(t.maCaBietTB) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+            "LOWER(t.nhomThietBi.tenNTB) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+            "ORDER BY t.maCaBietTB")
+    List<ThietBi> searchByMaCaBietTBOrTenNTB(@Param("searchTerm") String searchTerm);
 
     @Query("select tb from ThietBi tb where tb.trangThai = 'Trong kho' and tb.tinhTrang != 'Đã tiêu hao' order by tb.maCaBietTB")
     List<ThietBi> getAllCoTheGhiGiam();

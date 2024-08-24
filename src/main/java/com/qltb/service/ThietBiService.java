@@ -7,6 +7,7 @@ import com.qltb.mapper.ThietBiMapper;
 import com.qltb.model.request.create.BaoCaoKiemKeTB;
 import com.qltb.model.request.create.BaoCaoThongKeCreateRequest;
 import com.qltb.model.request.create.ThietBiCreateRequest;
+import com.qltb.model.request.update.StatusThietBiUpdateRequest;
 import com.qltb.model.request.update.ThietBiUpdateRequest;
 import com.qltb.model.response.*;
 import com.qltb.repository.NhomThietBiRepository;
@@ -78,14 +79,19 @@ public class ThietBiService {
         return thietBiRepository.findAllChuaThanhLy(Sort.by(Sort.Direction.ASC, "maCaBietTB")).stream().map(thietBiMapper::toThietBiResponse).toList();
     }
 
-    public Page<ThietBiResponse> search(String maCaBietThietBi, int page, int size) {
+    public Page<ThietBiResponse> search(String searchTerm, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return thietBiRepository.findByMaCaBietTBContainingIgnoreCaseOrderByMaCaBietTB(maCaBietThietBi, pageable).map(thietBiMapper::toThietBiResponse);
+        return thietBiRepository.searchByMaCaBietTBOrTenNTB(searchTerm, pageable)
+                .map(thietBiMapper::toThietBiResponse);
     }
 
-    public List<ThietBiResponse> search(String maCaBietThietBi) {
-        return thietBiRepository.findByMaCaBietTBContainingIgnoreCaseOrderByMaCaBietTB(maCaBietThietBi).stream().map(thietBiMapper::toThietBiResponse).toList();
+    public List<ThietBiResponse> search(String searchTerm) {
+        return thietBiRepository.searchByMaCaBietTBOrTenNTB(searchTerm)
+                .stream()
+                .map(thietBiMapper::toThietBiResponse)
+                .collect(Collectors.toList());
     }
+
 
     private String generateMaCB(String maNTB) {
         int amount = thietBiRepository.countTB(maNTB);
@@ -117,8 +123,20 @@ public class ThietBiService {
 
     @Transactional
     public ThietBiResponse timThay(String maPhieuBao, String maCaBietTB) {
+        Optional<ThietBi> thietBiOptional = thietBiRepository.findById(maCaBietTB);
+        if (thietBiOptional.isPresent()) {
+            ThietBi thietBi = thietBiOptional.get();
+            thietBi.setTrangThai("Trong kho");
+            thietBiRepository.save(thietBi);
+
+            theoDoiHongMatRepository.deleteById(maPhieuBao);
+
+            return thietBiMapper.toThietBiResponse(thietBi);
+        }
+
         return null;
     }
+
 
     public List<TKSoLuongTheoNTBResponse> tkSoLuongTheoNTB() {
         return thietBiRepository.tkSoLuongTheoNTB();
@@ -208,5 +226,18 @@ public class ThietBiService {
     public List<ThietBiResponse> baoCaoKiemKeTB(BaoCaoKiemKeTB request) {
         return thietBiRepository.baoCaoKiemKeTB(request.getTuNgay(), request.getDenNgay(),
                 request.isHong(), request.isMat(), request.isDungDuoc(), request.isDangHoatDong());
+    }
+
+    @Transactional
+    public ThietBiResponse updateStatusThietBi(String maCaBietTB, StatusThietBiUpdateRequest request) {
+        Optional<ThietBi> thietBiOptional = thietBiRepository.findById(maCaBietTB);
+        if (thietBiOptional.isPresent()) {
+            ThietBi thietBi = thietBiOptional.get();
+            thietBi.setTrangThai(request.getTrangThai());
+            thietBiRepository.save(thietBi);
+            return thietBiMapper.toThietBiResponse(thietBi);
+        } else {
+            throw new IllegalArgumentException("Thiết bị không tồn tại với mã cá biệt: " + maCaBietTB);
+        }
     }
 }
