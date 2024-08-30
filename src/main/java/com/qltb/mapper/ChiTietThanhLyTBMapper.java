@@ -17,6 +17,6 @@ public interface ChiTietThanhLyTBMapper {
     @Mapping(target = "khoPhong", source = "thietBi.khoPhong.tenKP")
     @Mapping(target = "trangThai", source = "thietBi.trangThai")
     @Mapping(target = "tinhTrang", source = "thietBi.tinhTrang")
-    @Mapping(target = "lyDoThanhLy", source = "lyDoTL")
+    @Mapping(target = "lyDoTL", source = "lyDoTL")
     ChiTietThanhLyTBResponse toChiTietThanhLyTBResponse(ChiTietThanhLyTB chiTietThanhLyTB);
 }

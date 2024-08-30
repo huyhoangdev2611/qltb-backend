@@ -224,7 +224,7 @@ public class ThietBiService {
     }
 
     public List<ThietBiResponse> baoCaoKiemKeTB(BaoCaoKiemKeTB request) {
-        return thietBiRepository.baoCaoKiemKeTB(request.getTuNgay(), request.getDenNgay(),
+        return thietBiRepository.baoCaoKiemKeTB(
                 request.isHong(), request.isMat(), request.isDungDuoc(), request.isDangHoatDong());
     }
 

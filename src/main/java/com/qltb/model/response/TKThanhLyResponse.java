@@ -11,5 +11,5 @@ public class TKThanhLyResponse {
     private String maCaBietTB;
     private String tenTB;
     private LocalDate ngayThanhLy;
-    private String lyDoThanhLy;
+    private String lyDoTL;
 }

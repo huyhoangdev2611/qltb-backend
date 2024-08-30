@@ -11,6 +11,6 @@ public class ChiTietThanhLyTBResponse {
     private String khoPhong;
     private String trangThai;
     private String tinhTrang;
-    private String lyDoThanhLy;
+    private String lyDoTL;
 
 }

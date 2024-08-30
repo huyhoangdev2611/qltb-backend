@@ -186,12 +186,11 @@ public interface ThietBiRepository extends JpaRepository<ThietBi, String> {
                         tb.dangHoatDong
                     ) 
                     from ThietBi tb
-                    where tb.ngayNhap >= :tuNgay and tb.ngayNhap <= :denNgay
-                    and (
+                    where (
                     (tb.trangThai = 'Đã mất' and :isMat = true) 
                     or (tb.tinhTrang = 'Hỏng' and :isHong = true) 
                     or (tb.tinhTrang = 'Dùng được' and :isDungDuoc = true) 
                     or (tb.dangHoatDong = true and :isDangHoatDong = true))
             """)
-    List<ThietBiResponse> baoCaoKiemKeTB(LocalDate tuNgay, LocalDate denNgay, boolean isHong, boolean isMat, boolean isDungDuoc, boolean isDangHoatDong);
+    List<ThietBiResponse> baoCaoKiemKeTB(boolean isHong, boolean isMat, boolean isDungDuoc, boolean isDangHoatDong);
 }
