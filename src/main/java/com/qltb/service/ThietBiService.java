@@ -208,7 +208,7 @@ public class ThietBiService {
 //    }
 
     public long getTotalDevices() {
-        return thietBiRepository.count();
+        return thietBiRepository.countByTongSoThietBi();
     }
 
     public long getDevicesInStorage() {

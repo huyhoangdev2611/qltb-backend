@@ -9,6 +9,7 @@ import com.qltb.mapper.MuonTBMapper;
 import com.qltb.model.request.create.MuonTBCreateRequest;
 import com.qltb.model.request.update.MuonTBUpdateRequest;
 import com.qltb.model.request.update.MuonTBUpdateStatusRequest;
+import com.qltb.model.response.ChiTietMuonTBResponse;
 import com.qltb.model.response.MonthlyBorrowedDevicesResponse;
 import com.qltb.model.response.MuonTBResponse;
 import com.qltb.repository.MuonTBRepository;
@@ -85,8 +86,24 @@ public class MuonTBService {
     public void delete(String id) {
         MuonTB muonTB = muonTBRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid loan ID"));
+
+        List<ChiTietMuonTB> chiTietMuonTBList = chiTietMuonTBRepository.findByMaPhieuMuon(muonTB.getMaPhieuMuon());
+
+        chiTietMuonTBList.forEach(chiTietMuonTB -> {
+            ThietBi thietBi = thietBiRepository.findById(chiTietMuonTB.getMaCaBietTB())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid device ID"));
+
+            thietBi.setTrangThai("Trong kho");
+            thietBi.setTinhTrang("Dùng được");
+
+            thietBiRepository.save(thietBi);
+        });
+
+        chiTietMuonTBRepository.deleteByMaPhieuMuon(muonTB.getMaPhieuMuon());
+
         muonTBRepository.delete(muonTB);
     }
+
 
     public Page<MuonTBResponse> getAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "maPhieuMuon"));
@@ -155,6 +172,8 @@ public class MuonTBService {
             muonTB.setTrangThai(updateRequest.getTrangThai());
         }
 
+        chiTietMuonTBRepository.deleteByMaPhieuMuon(maPhieuMuon);
+
         List<ChiTietMuonTB> chiTietMuonTBList = Optional.ofNullable(updateRequest.getChiTietMuonTBList())
                 .orElseGet(List::of)
                 .stream()
@@ -206,17 +225,25 @@ public class MuonTBService {
     private MuonTBResponse updateStatusAndMapToResponse(MuonTB muonTB) {
         updateStatusIfOverdue(muonTB);
         MuonTBResponse muonTBResponse = muonTBMapper.toMuonTBResponse(muonTB);
-        for (int i = 0; i < muonTBResponse.getChiTietMuonTBList().size(); i++) {
-            ChiTietMuonTB chiTietMuonTB = muonTB.getChiTietMuonTBList().get(i);
-            NhomThietBi nhomThietBi = chiTietMuonTB.getThietBi().getNhomThietBi();
 
-            muonTBResponse.getChiTietMuonTBList().get(i).setTenNTB(nhomThietBi.getTenNTB());
+        List<ChiTietMuonTB> chiTietMuonTBList = muonTB.getChiTietMuonTBList();
+        List<ChiTietMuonTBResponse> chiTietMuonTBResponseList = muonTBResponse.getChiTietMuonTBList();
 
-            // Set tbTieuHao value
-            muonTBResponse.getChiTietMuonTBList().get(i).setThietBiTieuHao(nhomThietBi.isTbTieuHao());
+        // Kiểm tra kích thước danh sách
+        if (chiTietMuonTBList != null && chiTietMuonTBResponseList != null) {
+            for (int i = 0; i < chiTietMuonTBList.size(); i++) {
+                if (i >= chiTietMuonTBResponseList.size()) break; // Tránh lỗi chỉ số ngoài phạm vi
+
+                ChiTietMuonTB chiTietMuonTB = chiTietMuonTBList.get(i);
+                NhomThietBi nhomThietBi = chiTietMuonTB.getThietBi().getNhomThietBi();
+
+                chiTietMuonTBResponseList.get(i).setTenNTB(nhomThietBi.getTenNTB());
+                chiTietMuonTBResponseList.get(i).setThietBiTieuHao(nhomThietBi.isTbTieuHao());
+            }
         }
         return muonTBResponse;
     }
+
 
 
     private void updateStatusIfOverdue(MuonTB muonTB) {

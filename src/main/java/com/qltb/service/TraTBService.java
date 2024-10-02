@@ -67,10 +67,19 @@ public class TraTBService {
                     chiTietTraTB.setTraTB(savedTraTB);
                     chiTietTraTB.setMaPhieuTra(savedTraTB.getMaPhieuTra());
 
-                    // Update device status to "Trong kho"
+                    // Fetch ThietBi and update its status based on tinhTrangTra
                     ThietBi thietBi = thietBiRepository.findById(chiTietRequest.getMaCaBietTB())
                             .orElseThrow(() -> new IllegalArgumentException("Invalid device ID"));
-                    thietBi.setTrangThai("Trong kho");
+
+                    // Update the status of ThietBi based on tinhTrangTra
+                    String tinhTrangTra = chiTietRequest.getTinhTrangTra();
+                    if ("Đã tiêu hao".equals(tinhTrangTra)) {
+                        thietBi.setTrangThai("Đã tiêu hao");
+                    } else {
+                        thietBi.setTrangThai("Trong kho");
+                    }
+                    thietBi.setTinhTrang(tinhTrangTra);
+
                     thietBiRepository.save(thietBi);
 
                     return chiTietTraTB;
@@ -86,6 +95,8 @@ public class TraTBService {
 
         return traTBMapper.toTraTBResponse(savedTraTB);
     }
+
+
 
     public TraTBResponse findById(String id) {
         return traTBRepository.findById(id)

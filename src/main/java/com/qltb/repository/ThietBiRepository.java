@@ -49,6 +49,8 @@ public interface ThietBiRepository extends JpaRepository<ThietBi, String> {
 
     @Query("select tb from ThietBi tb where tb.trangThai = 'Trong kho' and tb.tinhTrang = 'Dùng được' and tb.dangHoatDong = true")
     List<ThietBi> getAllCoTheMuon();
+    @Query("SELECT COUNT(tb) FROM ThietBi tb WHERE tb.trangThai != 'Đã thanh lý' and tb.tinhTrang != 'Đã tiêu hao'")
+    long countByTongSoThietBi();
 
     @Query("SELECT COUNT(tb) FROM ThietBi tb WHERE tb.trangThai = 'Trong kho'")
     long countByTrangThaiTrongKho();
